@@ -1,0 +1,270 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style type="text/css">
+
+    .pagination {
+        float: right;
+        margin: 0;
+        margin-top: -18px;
+    }
+
+    .pull-left {
+        margin-top: 20px;
+        padding-left: 20px;
+    }
+
+    .pull-right {
+        margin-top: 20px;
+        padding-right: 20px;
+    }
+
+    tbody {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="panel panel-default"> 
+
+    <div class="panel-body" style="padding-left:30px;padding-right:30px;padding-top:30px;min-height:720px;padding-bottom:30px">
+
+        <div class="row">
+
+            <div class="panel panel-default">
+                <div class="panel-body" style="padding-bottom:20px">
+
+                    <div class="form-inline form">
+
+                        <div class="col-sm-12" style="margin-top:10px">
+
+                            <b>服务节点</b>
+
+                            <button type="button" onclick="select_all(this)" style="width:60px;margin-right:8px;margin-left:8px" class="btn btn-success btn-xs">全选</button>
+
+                            <button type="button" onclick="select_reverse(this)" style="width:60px;margin-right:8px;" class="btn btn-success btn-xs">反选</button>
+
+                        </div>
+
+                        <div class="col-sm-12 node-row" style="margin-top:8px;margin-bottom:8px;min-height:44px">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-inline form" style="margin-bottom:30px;">
+
+                        <div class="col-sm-3">
+                            <label class="form-label">开始时间</label>
+                            <input type="text" class="form-control laydate start">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="form-label">结束时间</label>
+                            <input type="text" class="form-control laydate end">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="form-label">请求地址</label>
+                            <input placeholder="支持模糊查询" type="text" class="form-control laydate url">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="form-label">IP地址</label>
+                            <input placeholder="" type="text" class="form-control laydate ipadress">
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-3" style="padding-left:0">
+
+                            <button style="min-width:120px;" onclick="QueryClick(this)" class="btn btn-info btn-search">查询</button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12" style="margin-top:24px;">
+
+                        <table id="TableData" class="table table-bordered" style="background-color:#FFF;width:100%;margin:0 auto; clear:both;border-top:2px solid #67c2ef;"></table>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    laydate.render({ elem: '.start', type: 'datetime', theme: '#67c2ef' });
+    laydate.render({ elem: '.end', type: 'datetime', theme: '#67c2ef' });
+
+     GetNodes();
+
+    InitTable();
+
+    function GetNodes() {
+
+        $.ajax({
+            url: "/Data/GetNodes",
+            success: function (result) {
+
+                $(".node-row").html("");
+
+                $.each(result.data, function (i, item) {
+
+                    $(".node-row").append(' <button onclick="check_node(this)" style="width:120px;margin-left:20px;" class="btn btn-info">' + item + '</button>');
+
+                });
+            }
+        })
+    } 
+    // 初始化Table
+    function InitTable() {
+
+        var url = "/Data/GetRequestList";
+
+        $('#TableData').bootstrapTable({
+            pageNumber: 1,
+            pageSize: 10,
+            pageList: [10, 15, 20, 30, 50],
+            url: url,
+            queryParamsType: '',
+            sidePagination: "server",
+            pagination: true,
+            columns: [
+                {
+                    field: 'id',
+                    title: '编号',
+                    align: 'center'
+                },
+                {
+                    field: 'node',
+                    title: '服务节点',
+                    align: 'center'
+                },
+                {
+                    field: 'route',
+                    title: '路径',
+                    align: 'center'
+
+                },
+                {
+                    field: 'url',
+                    title: '请求地址',
+                    align: 'center'
+
+                },
+                 {
+                    field: 'method',
+                    title: '请求方法',
+                    align: 'center'
+
+                },
+                 {
+                    field: 'milliseconds',
+                    title: '响应时间',
+                    align: 'center'
+
+                },
+                  {
+                    field: 'statusCode',
+                    title: '状态码',
+                    align: 'center'
+
+                },
+                   {
+                    field: 'ip',
+                    title: 'IP地址',
+                    align: 'center'
+
+                },
+                    
+                {
+                    field: 'createTime',
+                    title: '请求时间',
+                    align: 'center',
+                    formatter: function (value, row, index) { 
+
+                        value = value.replace('T', ' ');
+                        console.log(value)
+                        return value;
+                    }
+                }  
+            ]
+        });
+
+    } 
+
+    //全选
+    function select_all(item) {
+
+        $(item).parent().next().find("button").each(function (i, k) {
+
+            if ($(k).hasClass("btn-default")) {
+                $(k).removeClass("btn-default");
+                $(k).addClass("btn-info");
+            }
+        });
+    }
+
+    //反选
+    function select_reverse(item) {
+
+        $(item).parent().next().find("button").each(function (i, k) {
+
+            if ($(k).hasClass("btn-info")) {
+                $(k).removeClass("btn-info");
+                $(k).addClass("btn-default");
+            }
+            else {
+                $(k).removeClass("btn-default");
+                $(k).addClass("btn-info");
+            }
+
+        });
+    } 
+
+    function RefreshTable() {   
+
+        var url = "/Data/GetRequestList"; 
+
+        var start = $(".start").val().trim();
+        var end = $(".end").val().trim();
+        var requestUrl = $(".url").val().trim();
+        var ip = $(".ipadress").val().trim(); 
+
+        var nodes = []; 
+
+        $(".node-row").find(".btn-info").each(function (i, item) {
+            nodes.push($(item).text());
+        });
+
+        var node = nodes.join(","); 
+
+        url = url + `?start=${start}&end=${end}&url=${requestUrl}&ip=${ip}&node=${node}`; 
+
+        $('#TableData').bootstrapTable('refresh', { url:url });
+    } 
+
+    function QueryClick() { 
+
+        RefreshTable();
+
+    }
+
+</script>
+

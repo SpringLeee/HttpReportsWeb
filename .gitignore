@@ -3,3 +3,6 @@
 ################################################################################
 
 /HttpReports.Web/bin/Debug/netcoreapp2.2
+/.vs/HttpReportsWeb
+/HttpReports.Web/obj
+*.user

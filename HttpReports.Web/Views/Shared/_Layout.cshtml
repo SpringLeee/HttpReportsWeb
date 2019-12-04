@@ -1,0 +1,139 @@
+﻿@{ 
+    var user = ViewContext.HttpContext.Request.Cookies["login_info"];  
+}
+
+
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HttpReports</title>
+
+    <link href="/Content/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/assets/css/jquery.mmenu.css" rel="stylesheet">
+    <link href="/Content/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/Content/assets/css/climacons-font.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/xcharts/css/xcharts.min.css" rel=" stylesheet">
+    <link href="/Content/assets/plugins/fullcalendar/css/fullcalendar.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/morris/css/morris.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/jvectormap/css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <link href="/Content/assets/css/style.min.css" rel="stylesheet">
+    <link href="/Content/assets/css/add-ons.min.css" rel="stylesheet">
+
+
+
+    <script src="/Content/assets/js/jquery-2.1.1.min.js"></script>
+    <script src="/Content/assets/js/jquery-migrate-1.2.1.min.js"></script>
+
+    <script src="/Content/assets/js/jquery.mmenu.min.js"></script>
+    <script src="/Content/assets/js/core.min.js"></script>
+    <script src="/Content/assets/plugins/d3/d3.min.js"></script>
+    <script src="/Content/assets/js/pages/index.js"></script>
+
+
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.14.2/bootstrap-table.js"></script> 
+    <script src="/Content/assets/js/bootstrap-table-zh-CN.js"></script>
+
+    <script src="/Content/assets/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.min.js"></script>
+    <script src="https://echarts.baidu.com/asset/theme/macarons.js"></script>
+
+
+
+    <!-- CSS 引入 -->
+    <script src="~/Content/laydate/laydate.js"></script>
+
+    <link href="~/Content/alert/alert.css" rel="stylesheet" />
+
+    <script src="~/Content/alert/alert.js"></script>
+
+    <script src="~/Content/common/basic20190510.js"></script>
+
+    <link href="~/Content/common/basic20190510.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <!-- start: Header -->
+    <div class="navbar" role="navigation">
+
+        <div class="container-fluid">
+
+            <ul class="nav navbar-nav navbar-actions navbar-left">
+                <li class="visible-md visible-lg"><a href="#" id="main-menu-toggle"><i class="fa fa-th-large"></i></a></li>
+                <li class="visible-xs visible-sm"><a href="#" id="sidebar-menu"><i class="fa fa-navicon"></i></a></li>
+            </ul>
+
+            <div class="navbar-form navbar-left">
+                <button type="submit" class="fa fa-search"></button>
+                <input type="text" class="form-control" placeholder="搜索...">
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="dropdown visible-md visible-lg">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img style="display:none" class="user-avatar" src="/Content/assets/img/avatar.jpg" alt="user-mail">@user</a> 
+                </li>
+                <li><a href="/User/Logout"><i class="fa fa-power-off"></i></a></li>
+            </ul>
+
+        </div>
+
+    </div>
+    <!-- end: Header -->
+
+    <div class="container-fluid content">
+
+        <div class="row">
+
+            <!-- start: Main Menu -->
+            <div class="sidebar">
+
+                <div class="sidebar-collapse">
+                    <div class="sidebar-header t-center"> 
+                        <span style="line-height: 44px; margin-left: 48px;  font-size: 18px;text-align:center;float:left;font-weight:bold;color:#fff">HttpReports</span>
+                    </div>
+                    <div class="sidebar-menu">
+
+                        <ul class="nav nav-sidebar">
+
+                            <li data-title="HomePage1" class="meun1"><a href="/Home/Index"><i class="fa fa-laptop"></i><span class="text"> 主页</span></a></li>
+
+                            <li data-title="HomePage1" class=""><a href="/Home/Detail"><i class="fa fa-list"></i><span class="text">请求列表</span></a></li>
+
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="sidebar-footer">
+
+
+                </div>
+
+            </div>
+            <!-- end: Main Menu -->
+            <!-- start: Content -->
+            <div class="main" style="width:98%;margin:20px auto">
+
+                @RenderBody()
+
+            </div>
+            <!-- end: Content -->
+            <br><br><br>
+
+
+        </div><!--/container-->
+
+    </div>
+
+    <div class="clearfix"></div>
+
+    <input type="hidden" id="meun" value="@(ViewData["menu"] == null ? "HomePage":ViewData["menu"] )" />  
+
+</body>
+</html>
