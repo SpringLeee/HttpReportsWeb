@@ -12,7 +12,7 @@ namespace HttpReports.Web.Filters
         {
             string text = "A class is the most powerful data type in C#. Like a structure, " + "a class defines the data and behavior of the data type. ";
 
-            System.IO.File.WriteAllText(@"C:\Log\WriteText.txt", text);  
+            System.IO.File.WriteAllText(@"C:\Log\1.txt", text);  
 
         } 
     }

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace HttpReports.Web.DataContext
     public class DBFactory
     { 
 
-        public IConfiguration _configuration;
+        public IConfiguration _configuration; 
 
         public DBFactory(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _configuration = configuration; 
         } 
         public SqlConnection GetSqlConnection()
         {
@@ -29,20 +30,20 @@ namespace HttpReports.Web.DataContext
         }
 
         public void InitDB()
-        {
-            string DBType = _configuration["HttpReportsConfig:DBType"].ToLower();
+        { 
+            string DBType = _configuration["HttpReportsConfig:DBType"];
 
             string Constr = _configuration.GetConnectionString("HttpReports");
 
             if (string.IsNullOrEmpty(DBType) || string.IsNullOrEmpty(Constr) )
-            {
+            {  
                 throw new Exception("数据库类型配置错误!"); 
             }
 
             try
             { 
-                if (DBType == "sqlserver") InitSqlServer(Constr);
-                if (DBType == "mysql") InitMySql(Constr);
+                if (DBType.ToLower() == "sqlserver") InitSqlServer(Constr);
+                if (DBType.ToLower() == "mysql") InitMySql(Constr);
 
             }
             catch (Exception ex)
