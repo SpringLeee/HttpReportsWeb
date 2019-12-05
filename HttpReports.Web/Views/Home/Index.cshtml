@@ -58,7 +58,7 @@
 
                         </div>
 
-                    </div> 
+                    </div>
 
                 </div>
             </div>
@@ -67,7 +67,7 @@
 
         <div class="row board-row" style="margin-top:30px">
 
-            <p style="padding-left:20px;color:#3c763d">时间：<b>20191202 - 20191203</b></p> 
+            <p style="padding-left:20px;color:#3c763d">时间：<b>20191202 - 20191203</b></p>
 
             <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
                 <div class="smallstat blue-bg">
@@ -219,6 +219,21 @@
 
         </div>
 
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-body shadow-box">
+                        <div id="LatelyDayChart" style="height:420px"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
         <div class="row" style="padding-bottom:20px;margin-top:50px">
 
             <div class="form-inline form">
@@ -284,7 +299,7 @@
 
     QueryClick(); 
 
-    GetDayChart();
+    GetDayChart(); 
 
     //初始化百度Echart
     function InitChart() {
@@ -451,7 +466,7 @@
             }]
         };
 
-        global.DayStateAvgBar.setOption(global.DayStateAvgBarOption);
+        global.DayStateAvgBar.setOption(global.DayStateAvgBarOption); 
 
         global.DayStateAvgBar.showLoading("default", {
             text: '',
@@ -691,6 +706,39 @@
 
         global.SlowARTChart.setOption(global.SlowARTChartOption);
 
+
+        // 最近每天请求数量
+        global.LatelyDayChart = echarts.init(document.getElementById('LatelyDayChart'), 'macarons');
+
+        global.LatelyDayChartOption = {
+            tooltip: {},
+            legend: {
+                data: ['每天请求数量']
+            },
+            grid: {
+                left: '3%',
+                top:'20%',
+                right: '3%'
+            },
+            title: {
+                text: '每天请求数量',
+                x: "left",
+                y: "2%",
+                subtext: ""
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                type: 'line',
+                name: "请求次数",
+                data: []
+            }]
+        };
+
+        global.LatelyDayChart.setOption(global.LatelyDayChartOption); 
+
     }
 
     //Ajax获取页面数据
@@ -742,6 +790,37 @@
                 global.DayStateAvgBarOption.xAxis.data = result.data.hours;
                 global.DayStateAvgBarOption.series[0].data = result.data.avgList;
                 global.DayStateAvgBar.setOption(global.DayStateAvgBarOption);
+            }
+        })
+
+    }
+
+    function GetLatelyChart() {
+
+        var node = [];
+
+        var start = $(".start").val();
+        var end = $(".end").val();
+
+        $(".node-row").find(".btn-info").each(function (i, item) {
+            node.push($(item).text());
+        });  
+
+        $.ajax({
+            url: "/Data/GetLatelyDayChart",
+            type: "POST",
+            data: {
+                start: start,
+                end: end,
+                node: node.join(",")
+            },
+            success: function (result) {  
+
+                global.LatelyDayChartOption.title.subtext = result.data.range;
+                global.LatelyDayChartOption.xAxis.data = result.data.time;
+                global.LatelyDayChartOption.series[0].data = result.data.value;
+                global.LatelyDayChart.setOption(global.LatelyDayChartOption);  
+
             }
         })
 
@@ -1030,6 +1109,8 @@
         GetARTChart();
         GetTopCode500Chart();
         GetTOPRequestChart();
+
+        GetLatelyChart();
 
     }
 

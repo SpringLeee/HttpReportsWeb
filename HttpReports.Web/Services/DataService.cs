@@ -38,6 +38,8 @@ namespace HttpReports.Web.Services
 
         public List<RequestInfo> GetRequestList(GetRequestListRequest request, out int totalCount) => _accessor.GetRequestList(request,out totalCount);
 
+        public List<EchartPineDataModel> GetLatelyDayData(GetIndexDataRequest request) => _accessor.GetLatelyDayData(request);
+
 
     } 
 

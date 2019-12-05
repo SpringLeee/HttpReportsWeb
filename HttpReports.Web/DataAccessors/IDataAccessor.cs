@@ -22,6 +22,8 @@ namespace HttpReports.Web.DataAccessors
 
         GetIndexDataResponse GetIndexData(GetIndexDataRequest request);
 
+        List<EchartPineDataModel> GetLatelyDayData(GetIndexDataRequest request);
+
         List<GetTopResponse> GetTopRequest(GetTopRequest request);
 
         string BuildTopWhere(GetTopRequest request);

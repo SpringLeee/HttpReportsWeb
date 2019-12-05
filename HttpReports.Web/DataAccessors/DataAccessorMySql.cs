@@ -118,6 +118,28 @@ namespace HttpReports.Web.DataAccessors
             return conn.Query<EchartPineDataModel>(sql).ToList();
         }
 
+
+        public List<EchartPineDataModel> GetLatelyDayData(GetIndexDataRequest request)
+        { 
+            string where = " where 1=1 "; 
+             
+
+            if (!request.Node.IsEmpty())
+            {
+                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+
+                where = where + $" AND Node IN ({nodes})";
+            }
+
+            where = where + $" AND CreateTime >= '{request.Start}' AND CreateTime < '{request.End}'  ";
+
+
+            string sql = $" Select DATE_FORMAT(CreateTime,'%Y-%m-%d') Name ,COUNT(1) Value From RequestInfo {where} Group by  DATE_FORMAT(CreateTime,'%Y-%m-%d')  ";
+
+            return conn.Query<EchartPineDataModel>(sql).ToList();  
+
+        }
+
         public List<EchartPineDataModel> GetDayResponseTime(GetIndexDataRequest request)
         {
             string where = " where 1=1 ";

@@ -6,3 +6,4 @@
 /.vs/HttpReportsWeb
 /HttpReports.Web/obj
 *.user
+/HttpReports.Web/bin/Release/netcoreapp2.2

@@ -62,6 +62,67 @@ namespace HttpReports.Web.Controllers
             return Json(new Result(1, "ok", new { timesList , avgList ,hours }));
         }
 
+        public IActionResult GetLatelyDayChart(GetIndexDataRequest request)
+        {
+            // 默认30天
+            if (request.Start.IsEmpty() && request.End.IsEmpty())
+            {
+                request.Start = DateTime.Now.Date.AddDays(-30).ToString("yyyy-MM-dd HH:mm:ss");
+                request.End = DateTime.Now.Date.AddDays(1).AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            else if (!request.Start.IsEmpty() && !request.End.IsEmpty())  
+            {
+                if ((request.End.ToDateTime() - request.Start.ToDateTime()).Days > 30)
+                {
+                    request.Start = request.End.ToDateTime().AddDays(-30).ToString("yyyy-MM-dd HH:mm:ss");  
+                }  
+            }
+            else if(request.Start.IsEmpty() && !request.End.IsEmpty())
+            {
+                request.Start = request.End.ToDateTime().AddDays(-30).ToString("yyyy-MM-dd HH:mm:ss"); 
+            }
+            else if (!request.Start.IsEmpty() && request.End.IsEmpty())
+            {
+                request.End = request.Start.ToDateTime().AddDays(30).ToString("yyyy-MM-dd HH:mm:ss");
+                if (request.End.ToDateTime() >= DateTime.Now.Date)
+                {
+                    request.End = DateTime.Now.Date.AddDays(1).AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss");
+                } 
+            }
+            else
+            {
+
+            }
+
+            var list = _dataService.GetLatelyDayData(request);
+
+            List<string> time = new List<string>();
+            List<int> value = new List<int>();
+
+            string Range = request.Start.ToDateTime().ToString("yyyy-MM-dd") + " - " + request.End.ToDateTime().ToString("yyyy-MM-dd"); 
+
+            for (int i = 0; i <= (request.End.ToDateTime() - request.Start.ToDateTime()).Days ; i++)
+            {
+                DateTime k = request.Start.ToDateTime().AddDays(i);
+
+                var j = list.Where(x => x.Name == k.ToString("yyyy-MM-dd")).FirstOrDefault();
+
+                if (j != null)
+                {
+                    time.Add(k.ToString("dd"));
+                    value.Add(j.Value);
+                }
+                else
+                {
+                    time.Add(k.ToString("dd"));
+                    value.Add(0); 
+                }  
+            }  
+
+            return Json(new Result(1,"ok",new { time,value,Range })); 
+        } 
+
+
         public IActionResult GetNodes()
         {
             var nodes = _dataService.GetNodes();
