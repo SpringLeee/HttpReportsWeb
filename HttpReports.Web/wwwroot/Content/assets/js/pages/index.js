@@ -1,32 +1,7 @@
 $(document).ready(function(){
 	
 	todoList();
-	discussionWidget();
-	
-	/* ---------- Datable ---------- */
-	$('.datatable').dataTable({
-		"sDom": "<'row'<'col-lg-6'l><'col-lg-6'f>r>t<'row'<'col-lg-12'i><'col-lg-12 center'p>>",
-		"bPaginate": false,
-		"bFilter": false,
-		"bLengthChange": false,
-		"bInfo": false,		
-	});
-	
-	$('.countries').dataTable({
-		"sDom": "<'row'<'col-lg-6'l><'col-lg-6'f>r>t<'row'<'col-lg-12'i><'col-lg-12 center'p>>",
-		"bPaginate": false,
-		"bFilter": false,
-		"bLengthChange": false,
-		"bInfo": false,
-		// Disable sorting on the first column
-		"aoColumnDefs" : [ {
-			'bSortable' : false,
-			'aTargets' : [ 0 ]
-		} ]
-	});
-	
-	
-	
+	discussionWidget();  
 	
 	/* ---------- Map ---------- */
 	$(function(){
@@ -47,10 +22,10 @@ $(document).ready(function(){
 	});
 	
 	/* ---------- Placeholder Fix for IE ---------- */
-	$('input, textarea').placeholder();
+	//$('input, textarea').placeholder();
 
 	/* ---------- Auto Height texarea ---------- */
-	$('textarea').autosize();
+	//$('textarea').autosize();
 	
 	$('#recent a:first').tab('show');
 	$('#recent a').click(function (e) {
@@ -81,71 +56,7 @@ $(document).ready(function(){
 	var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
-	var y = date.getFullYear();
-	
-	$('.calendar').fullCalendar({
-		header: {
-			right: 'next',
-			center: 'title',
-			left: 'prev'
-		},
-		defaultView: 'month',
-		editable: true,
-		events: [
-			{
-				title: 'All Day Event',
-				start: '2014-06-01'
-			},
-			{
-				title: 'Long Event',
-				start: '2014-06-07',
-				end: '2014-06-10'
-			},
-			{
-				id: 999,
-				title: 'Repeating Event',
-				start: '2014-06-09 16:00:00'
-			},
-			{
-				id: 999,
-				title: 'Repeating Event',
-				start: '2014-06-16 16:00:00'
-			},
-			{
-				title: 'Meeting',
-				start: '2014-06-12 10:30:00',
-				end: '2014-06-12 12:30:00'
-			},
-			{
-				title: 'Lunch',
-				start: '2014-06-12 12:00:00'
-			},
-			{
-				title: 'Birthday Party',
-				start: '2014-05-10 18:05:00'
-			},
-			{
-				title: 'Click for Google',
-				url: 'http://google.com/',
-				start: '2014-06-28'
-			}
-		]
-	});
-	
-	/*------- Moris Chart -------*/
-	Morris.Donut({
-		element: 'hero-donut',
-		data: [
-			{label: 'Chrome', value: 17 },
-			{label: 'Opera', value: 18 },
-	      	{label: 'Firefox', value: 23 },
-	      	{label: 'Safari', value: 12 },
-	      	{label: 'IE', value: 8 },
-			{label: 'Other', value: 22 }
-	    ],
-		colors: ["#36A9E1", "#d1b993", "#bdea74", "#67c2ef", "#fabb3d", "#ff5454"],
-		formatter: function (y) { return y + "%" }
-	});
+	var y = date.getFullYear();  
 	
 	
 	/*------- Realtime Update Chart -------*/

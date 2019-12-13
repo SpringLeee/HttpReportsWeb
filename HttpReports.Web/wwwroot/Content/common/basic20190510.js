@@ -102,3 +102,16 @@ function HttpGet(url,data) {
     }).responseJSON;
 
 }
+
+
+function GoTop() {
+
+    $.goup({
+        trigger: 100,
+        bottomOffset:60,
+        locationOffset:16,
+        title: '',
+        titleAsText: true
+    }); 
+
+}

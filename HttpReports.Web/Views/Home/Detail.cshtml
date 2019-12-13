@@ -109,6 +109,8 @@
 
 <script>
 
+     GoTop();
+
     laydate.render({ elem: '.start', type: 'datetime', theme: '#67c2ef' });
     laydate.render({ elem: '.end', type: 'datetime', theme: '#67c2ef' });
 
@@ -139,7 +141,7 @@
 
         $('#TableData').bootstrapTable({
             pageNumber: 1,
-            pageSize: 10,
+            pageSize: 50,
             pageList: [10, 15, 20, 30, 50],
             url: url,
             queryParamsType: '',
@@ -208,6 +210,19 @@
         });
 
     } 
+
+     //选择服务节点
+    function check_node(item) {
+
+        if ($(item).hasClass("btn-info")) {
+            $(item).removeClass("btn-info");
+            $(item).addClass("btn-default");
+        }
+        else {
+            $(item).removeClass("btn-default");
+            $(item).addClass("btn-info");
+        }
+    }
 
     //全选
     function select_all(item) {
