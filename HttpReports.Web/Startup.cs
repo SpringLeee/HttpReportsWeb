@@ -65,9 +65,9 @@ namespace HttpReports.Web
         private void DependencyInjection(IServiceCollection services)
         {
             services.AddSingleton<HttpReportsConfig>();  
-            services.AddSingleton<DBFactory>();
+            services.AddTransient<DBFactory>();
 
-            services.AddScoped<DataService>();
+            services.AddTransient<DataService>();
 
             // 初始化数据库表
             services.BuildServiceProvider().GetService<DBFactory>().InitDB();

@@ -37,7 +37,7 @@ namespace HttpReports.Web.Controllers
 
             if (_config.UserName == username && _config.Password == password)
             { 
-                HttpContext.SetCookie("login_info", username,60 * 30);
+                HttpContext.SetCookie("login_info", username,60 * 30 * 10);
 
                 return Json(new Result(1, "登录成功"));
             } 

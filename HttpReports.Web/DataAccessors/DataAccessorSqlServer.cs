@@ -5,6 +5,7 @@ using HttpReports.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -161,7 +162,7 @@ namespace HttpReports.Web.DataAccessors
         } 
 
         public List<string> GetNodes()
-        {
+        { 
             return conn.Query<string>(" Select Distinct Node  FROM RequestInfo ").ToList(); 
         }
 
@@ -244,9 +245,9 @@ namespace HttpReports.Web.DataAccessors
         /// <returns></returns>
         public List<EchartPineDataModel> GetTOPART(GetTopRequest request)
         {
-            string where = BuildTopWhere(request);
+            string where = BuildTopWhere(request); 
 
-            string sql = $" Select TOP {request.TOP}   Url Name ,Avg(Milliseconds) Value From RequestInfo {where} Group By Url order by Value {(request.IsDesc ? "Desc" : "Asc")} ";
+            string sql = $" Select TOP {request.TOP}   Url Name ,Avg(Milliseconds) Value From RequestInfo {where} Group By Url order by Value {(request.IsDesc ? "Desc" : "Asc")} ";  
 
             return conn.Query<EchartPineDataModel>(sql).ToList();
 

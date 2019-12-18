@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 namespace HttpReports.Web.DataContext
 {
     public class DBFactory
-    { 
-
+    {  
         public IConfiguration _configuration; 
 
         public DBFactory(IConfiguration configuration)
@@ -89,7 +88,7 @@ namespace HttpReports.Web.DataContext
 
                     ");
 
-                    MockSqlServer(Constr);
+                    new MockData().MockSqlServer(Constr);
                 }
 
             } 
@@ -131,52 +130,11 @@ namespace HttpReports.Web.DataContext
                           PRIMARY KEY  (`Id`)
                         ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;  ");
 
-                    MockMySql(Constr);
+                   new MockData().MockMySql(Constr);
 
                 }   
             }  
-        }
-
-        private void MockSqlServer(string Constr)
-        { 
-            using (SqlConnection con = new SqlConnection(Constr))
-            {
-                for (int i = 0; i < 100; i++)
-                { 
-                    con.Execute($"Insert Into RequestInfo Values ('auth','/user/checklogin','/api/user/checklogin','GET',{new Random().Next(1,999)},'200','192.168.1.1','{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}')"); 
-                }
-
-                for (int i = 0; i < 20; i++)
-                {
-                    con.Execute($"Insert Into RequestInfo Values ('sms','/user/sendsms','/api/user/sendsms','POST',{new Random().Next(1, 999)},'404','192.168.1.2','{DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss")}')");
-                }
-
-                for (int i = 0; i < 50; i++)
-                {
-                    con.Execute($"Insert Into RequestInfo Values ('payment','/user/pay','/api/user/pay','POST',{new Random().Next(1, 999)},'500','192.168.1.3','{DateTime.Now.AddMinutes(95).ToString("yyyy-MM-dd HH:mm:ss")}')");
-                }
-            } 
-        }
-
-        private void MockMySql(string Constr)
-        {
-            using (MySqlConnection con = new MySqlConnection(Constr))
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    con.Execute($"Insert Into RequestInfo  (Node,Route,Url,Method,Milliseconds,StatusCode,IP,CreateTime) Values ('auth','/user/checklogin','/api/user/checklogin','GET',{new Random().Next(1, 999)},'500','192.168.1.1','{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}')");
-                }
-
-                for (int i = 0; i < 20; i++)
-                {
-                    con.Execute($"Insert Into RequestInfo (Node,Route,Url,Method,Milliseconds,StatusCode,IP,CreateTime) Values ('sms','/user/sendsms','/api/user/sendsms','POST',{new Random().Next(1, 999)},'404','192.168.1.2','{DateTime.Now.AddHours(2).ToString("yyyy-MM-dd HH:mm:ss")}')");
-                }
-
-                for (int i = 0; i < 50; i++)
-                {
-                    con.Execute($"Insert Into RequestInfo (Node,Route,Url,Method,Milliseconds,StatusCode,IP,CreateTime) Values ('payment','/user/pay','/api/user/pay','POST',{new Random().Next(1, 999)},'200','192.168.1.3','{DateTime.Now.AddMinutes(95).ToString("yyyy-MM-dd HH:mm:ss")}')");
-                }
-            }
         } 
+       
     }  
 }

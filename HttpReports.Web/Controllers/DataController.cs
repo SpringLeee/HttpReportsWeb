@@ -14,7 +14,7 @@ namespace HttpReports.Web.Controllers
         private DataService _dataService;
 
         private List<int> hours = new List<int>  { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23  };  
-
+        
 
         public DataController(DataService dataService)
         {
@@ -120,8 +120,120 @@ namespace HttpReports.Web.Controllers
             }  
 
             return Json(new Result(1,"ok",new { time,value,Range })); 
-        } 
+        }
 
+        public IActionResult GetTimeRange(int Tag)
+        { 
+            if (Tag == 1)
+            {
+                return Json(new Result(1,"ok" , new { 
+                 
+                    start = DateTime.Now.ToString("yyyy-MM-dd"),
+                    end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
+
+                })); 
+            }
+
+            if (Tag == 2)
+            {
+                return Json(new Result(1, "ok", new
+                {
+
+                    start = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"),
+                    end = DateTime.Now.ToString("yyyy-MM-dd")
+
+                }));
+            }
+
+            if (Tag == 3)
+            {
+                return Json(new Result(1, "ok", new
+                {
+
+                    start = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd"),
+                    end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
+
+                }));
+            }
+
+            if (Tag == 4)
+            {
+                return Json(new Result(1, "ok", new
+                {
+
+                    start = DateTime.Now.AddDays(-DateTime.Now.Day+1).ToString("yyyy-MM-dd"),
+                    end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
+
+                }));
+            } 
+
+            return NoContent(); 
+        }
+
+        public IActionResult GetTimeTag(string start,string end,int TagValue)
+        { 
+            Result result = new Result(1, "ok", 0);
+
+            if (TagValue > 0)
+            {
+                if (TagValue == 1 && start == DateTime.Now.ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
+                {
+                    return Json(new Result(1, "ok", -1));
+                }
+
+                if (TagValue == 2 && start == DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") && end == DateTime.Now.ToString("yyyy-MM-dd"))
+                {
+                    return Json(new Result(1, "ok", -1));
+                }
+
+                if (TagValue == 3 && start == DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
+                {
+                    return Json(new Result(1, "ok", -1));
+                }
+
+                if (TagValue == 4 && start == DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
+                {
+                    return Json(new Result(1, "ok", -1));
+                } 
+            }
+
+            if (start.IsEmpty() && end.IsEmpty())
+            {
+                result = new Result(1, "ok", 1);
+
+                return Json(result);
+            }
+
+
+            if (start == DateTime.Now.ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
+            {
+                result = new Result(1, "ok", 1);
+
+                return Json(result);
+            }
+
+            if (start == DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") && end == DateTime.Now.ToString("yyyy-MM-dd"))
+            {
+                result = new Result(1, "ok", 2);
+                return Json(result);
+            }
+
+            if (start == DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
+            {
+                result = new Result(1, "ok", 3);
+                return Json(result);
+
+            }
+
+            if (start == DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
+            {
+                result = new Result(1, "ok", 4);
+                return Json(result);
+            }   
+
+
+            return Json(result); 
+        } 
 
         public IActionResult GetNodes()
         {
@@ -148,7 +260,7 @@ namespace HttpReports.Web.Controllers
                 Start =request.Start,
                 End = request.End,
                 IsDesc = true,
-                TOP = 15
+                TOP = request.TOP
             });
 
             var least = _dataService.GetTopRequest(new Models.GetTopRequest
@@ -157,7 +269,7 @@ namespace HttpReports.Web.Controllers
                 Start = request.Start,
                 End = request.End,
                 IsDesc = false,
-                TOP = 15
+                TOP = request.TOP
             });
 
             return Json(new Result(1, "ok", new { most,least })); 
@@ -174,7 +286,7 @@ namespace HttpReports.Web.Controllers
                 Start = request.Start,
                 End = request.End,
                 IsDesc = true,
-                TOP = 15
+                TOP = request.TOP
             });  
 
             return Json(new Result(1, "ok", data)); 
@@ -192,7 +304,7 @@ namespace HttpReports.Web.Controllers
                 Start = request.Start,
                 End = request.End,
                 IsDesc = false,
-                TOP = 15
+                TOP = request.TOP
             }); 
 
             var slow = _dataService.GetTOPART(new Models.GetTopRequest
@@ -201,7 +313,7 @@ namespace HttpReports.Web.Controllers
                 Start = request.Start,
                 End = request.End,
                 IsDesc = true,
-                TOP = 15
+                TOP = request.TOP
             });
 
 
@@ -211,6 +323,14 @@ namespace HttpReports.Web.Controllers
         public IActionResult GetRequestList(GetRequestListRequest request)
         {
             int totalCount = 0;
+
+            if (request.Start.IsEmpty() && request.End.IsEmpty())
+            {
+                request.Start = DateTime.Now.ToString("yyyy-MM-dd");
+
+                request.End = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"); 
+
+            } 
 
             var list = _dataService.GetRequestList(request,out totalCount); 
 
