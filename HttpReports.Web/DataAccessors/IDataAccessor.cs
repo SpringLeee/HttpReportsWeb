@@ -33,5 +33,7 @@ namespace HttpReports.Web.DataAccessors
         List<EchartPineDataModel> GetTOPART(GetTopRequest request); 
 
         List<RequestInfo> GetRequestList(GetRequestListRequest request, out int totalCount);
+
+        List<EchartPineDataModel> GetMonthDataByYear(GetIndexDataRequest request);
     }
 }

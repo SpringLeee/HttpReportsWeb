@@ -40,6 +40,8 @@ namespace HttpReports.Web.Services
 
         public List<EchartPineDataModel> GetLatelyDayData(GetIndexDataRequest request) => _accessor.GetLatelyDayData(request);
 
+        public List<EchartPineDataModel> GetMonthDataByYear(GetIndexDataRequest request) => _accessor.GetMonthDataByYear(request);
+
 
     } 
 

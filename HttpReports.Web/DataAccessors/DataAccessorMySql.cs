@@ -45,8 +45,7 @@ namespace HttpReports.Web.DataAccessors
 
             return where;
 
-        }
-
+        } 
 
         public List<EchartPineDataModel> GetStatusCode(GetIndexDataRequest request)
         {
@@ -121,8 +120,7 @@ namespace HttpReports.Web.DataAccessors
 
         public List<EchartPineDataModel> GetLatelyDayData(GetIndexDataRequest request)
         { 
-            string where = " where 1=1 "; 
-             
+            string where = " where 1=1 ";  
 
             if (!request.Node.IsEmpty())
             {
@@ -139,6 +137,28 @@ namespace HttpReports.Web.DataAccessors
             return conn.Query<EchartPineDataModel>(sql).ToList();  
 
         }
+
+
+        public List<EchartPineDataModel> GetMonthDataByYear(GetIndexDataRequest request)
+        {
+            string where = " where 1=1 ";
+
+            if (!request.Node.IsEmpty())
+            {
+                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+
+                where = where + $" AND Node IN ({nodes})";
+            }
+
+            where = where + $" AND CreateTime >= '{request.Start}' AND CreateTime < '{request.End}'  ";
+
+            string sql = $" Select DATE_FORMAT(CreateTime,'%Y-%m') Name,Count(1) Value From RequestInfo {where} Group by  DATE_FORMAT(CreateTime,'%Y-%m') ";
+
+            return conn.Query<EchartPineDataModel>(sql).ToList();
+
+        }
+
+
 
         public List<EchartPineDataModel> GetDayResponseTime(GetIndexDataRequest request)
         {
@@ -240,7 +260,7 @@ namespace HttpReports.Web.DataAccessors
 
 
         /// <summary>
-        /// 获取接口平均响应时间
+        /// 获取接口平均处理时间
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>

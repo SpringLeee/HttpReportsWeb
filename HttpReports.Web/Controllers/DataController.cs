@@ -13,19 +13,68 @@ namespace HttpReports.Web.Controllers
     {   
         private DataService _dataService;
 
-        private List<int> hours = new List<int>  { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23  };  
-        
+        private List<int> hours = new List<int>  { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23  };   
 
         public DataController(DataService dataService)
         {
             _dataService = dataService;
         }
 
+        public IActionResult GetIndexChartA(GetIndexDataRequest request)
+        {  
+            request.Start = request.Start.IsEmpty() ? DateTime.Now.ToString("yyyy-MM-dd") : request.Start;
+            request.End = request.End.IsEmpty() ? DateTime.Now.AddDays(1).ToString("yyyy-MM-dd") : request.End; 
+
+            var TopRequest = _dataService.GetTopRequest(new Models.GetTopRequest { 
+                Node = request.Node,
+                Start =request.Start,
+                End = request.End,
+                IsDesc = true,
+                TOP = request.TOP
+            }); 
+
+            var TopError500= _dataService.GetCode500Response(new Models.GetTopRequest
+            {
+                Node = request.Node,
+                Start = request.Start,
+                End = request.End,
+                IsDesc = true,
+                TOP = request.TOP
+            }); 
+
+            var fast = _dataService.GetTOPART(new Models.GetTopRequest
+            {
+                Node = request.Node,
+                Start = request.Start,
+                End = request.End,
+                IsDesc = false,
+                TOP = request.TOP
+            });
+
+            var slow = _dataService.GetTOPART(new Models.GetTopRequest
+            {
+                Node = request.Node,
+                Start = request.Start,
+                End = request.End,
+                IsDesc = true,
+                TOP = request.TOP
+            });
+
+            var Art = new {  fast,slow}; 
+
+            var StatusCode = _dataService.GetStatusCode(request);
+
+            var ResponseTime = _dataService.GetResponseTimePie(request);
+
+            return Json(new Result(1, "ok",new {   StatusCode , ResponseTime, TopRequest, TopError500, Art })); 
+        } 
+
+
         public IActionResult GetStatusCodePie(GetIndexDataRequest request)
         {
-           var data = _dataService.GetStatusCode(request);
+            var data = _dataService.GetStatusCode(request);
 
-           return Json(new Result(1,"ok",data)); 
+            return Json(new Result(1,"ok",data)); 
         }
 
         public IActionResult GetResponseTimePie(GetIndexDataRequest request)
@@ -45,7 +94,7 @@ namespace HttpReports.Web.Controllers
             // 每小时请求次数
             List<EchartPineDataModel> times = _dataService.GetDayRequestTimes(request); 
 
-            //每小时平均响应时间
+            //每小时平均处理时间
             List<EchartPineDataModel> avg = _dataService.GetDayResponseTime(request); 
 
             foreach (var item in hours)
@@ -54,7 +103,7 @@ namespace HttpReports.Web.Controllers
                 var timeModel = times.Where(x => x.Name == item.ToString()).FirstOrDefault(); 
                 timesList.Add(timeModel == null ? 0:timeModel.Value);
 
-                //每小时平均响应时间
+                //每小时平均处理时间
                 var avgModel = avg.Where(x => x.Name == item.ToString()).FirstOrDefault(); 
                 avgList.Add(avgModel == null ? 0:avgModel.Value);  
             }
@@ -63,45 +112,24 @@ namespace HttpReports.Web.Controllers
         }
 
         public IActionResult GetLatelyDayChart(GetIndexDataRequest request)
-        {
-            // 默认30天
-            if (request.Start.IsEmpty() && request.End.IsEmpty())
+        { 
+            if (request.Month.IsEmpty())
             {
-                request.Start = DateTime.Now.Date.AddDays(-30).ToString("yyyy-MM-dd HH:mm:ss");
-                request.End = DateTime.Now.Date.AddDays(1).AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss");
-            }
-            else if (!request.Start.IsEmpty() && !request.End.IsEmpty())  
-            {
-                if ((request.End.ToDateTime() - request.Start.ToDateTime()).Days > 30)
-                {
-                    request.Start = request.End.ToDateTime().AddDays(-30).ToString("yyyy-MM-dd HH:mm:ss");  
-                }  
-            }
-            else if(request.Start.IsEmpty() && !request.End.IsEmpty())
-            {
-                request.Start = request.End.ToDateTime().AddDays(-30).ToString("yyyy-MM-dd HH:mm:ss"); 
-            }
-            else if (!request.Start.IsEmpty() && request.End.IsEmpty())
-            {
-                request.End = request.Start.ToDateTime().AddDays(30).ToString("yyyy-MM-dd HH:mm:ss");
-                if (request.End.ToDateTime() >= DateTime.Now.Date)
-                {
-                    request.End = DateTime.Now.Date.AddDays(1).AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss");
-                } 
-            }
-            else
-            {
-
+                request.Month = DateTime.Now.ToString("yyyy-MM");
             }
 
+            request.Start = request.Month + "-01";
+            request.End = (request.Month + "-01").ToDateTime().AddMonths(1).ToString("yyyy-MM-dd");
+            
+             
             var list = _dataService.GetLatelyDayData(request);
 
             List<string> time = new List<string>();
             List<int> value = new List<int>();
 
-            string Range = request.Start.ToDateTime().ToString("yyyy-MM-dd") + " - " + request.End.ToDateTime().ToString("yyyy-MM-dd"); 
+            string Range = request.Start.ToDateTime().ToString("yyyy-MM-dd") + " - " + request.End.ToDateTime().AddDays(-1).ToString("yyyy-MM-dd"); 
 
-            for (int i = 0; i <= (request.End.ToDateTime() - request.Start.ToDateTime()).Days ; i++)
+            for (int i = 0; i < (request.End.ToDateTime() - request.Start.ToDateTime()).Days ; i++)
             {
                 DateTime k = request.Start.ToDateTime().AddDays(i);
 
@@ -121,6 +149,47 @@ namespace HttpReports.Web.Controllers
 
             return Json(new Result(1,"ok",new { time,value,Range })); 
         }
+
+
+        public IActionResult GetMonthDataByYear(GetIndexDataRequest request)
+        {
+            if (request.Year.IsEmpty())
+            {
+                request.Year = DateTime.Now.ToString("yyyy");
+            }
+
+            request.Start = request.Year + "-01-01";
+            request.End = ( (request.Year.ToInt() + 1) + "-01-01").ToDateTime().ToString("yyyy-MM-dd");
+
+            string Range = request.Start.ToDateTime().ToString("yyyy-MM") + " - " + request.End.ToDateTime().AddDays(-1).ToString("yyyy-MM");
+
+            var list = _dataService.GetMonthDataByYear(request);
+
+            List<string> time = new List<string>();
+            List<int> value = new List<int>();
+
+            for (int i = 0; i < 12; i++)
+            {
+                DateTime k = request.Start.ToDateTime().AddMonths(i);
+
+                var j = list.Where(x => x.Name == k.ToString("yyyy-MM")).FirstOrDefault();
+
+                if (j != null)
+                {
+                    time.Add(k.ToString("yyyy-MM"));
+                    value.Add(j.Value);
+                }
+                else
+                {
+                    time.Add(k.ToString("yyyy-MM"));
+                    value.Add(0);
+                }
+            }
+
+            return Json(new Result(1, "ok", new { time, value, Range })); 
+
+        } 
+
 
         public IActionResult GetTimeRange(int Tag)
         { 
@@ -233,8 +302,7 @@ namespace HttpReports.Web.Controllers
 
 
             return Json(result); 
-        } 
-
+        }  
         public IActionResult GetNodes()
         {
             var nodes = _dataService.GetNodes();

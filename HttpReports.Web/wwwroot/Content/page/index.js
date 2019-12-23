@@ -1,7 +1,5 @@
-﻿
-
-GoTop();
-
+﻿  
+GoTop();  
 
 function InitPage() {
 
@@ -20,13 +18,11 @@ global.top = localStorage.getItem("TopCount") == null ? 10 : localStorage.getIte
 
 InitChart();
 
-getTopCount();
-
-GetData();
+getTopCount(); 
 
 QueryClick();
 
-GetDayChart();
+ 
 
 function getTopCount() {
 
@@ -99,12 +95,12 @@ function InitChart() {
 
 
 
-    // 响应时间
+    // 处理时间
     global.ResponseTimePie = echarts.init(document.getElementById('ResponseTimePie'), 'macarons');
 
     global.ResponseTimePieOption = {
         title: {
-            text: '请求响应时间(ms)',
+            text: '请求处理时间(ms)',
             x: "left",
             y: "2%"
         },
@@ -119,7 +115,7 @@ function InitChart() {
         },
         series: [
             {
-                name: '响应时间',
+                name: '处理时间',
                 type: 'pie',
                 radius: '55%',
                 center: ['50%', '60%'],
@@ -145,82 +141,7 @@ function InitChart() {
         zlevel: 0
     });
 
-    // 24小时请求次数
-    global.DayStateTimesBar = echarts.init(document.getElementById('DayStateTimesBar'), 'macarons');
-
-    global.DayStateTimesBarOption = {
-        tooltip: {},
-        legend: {
-            data: ['请求次数']
-        },
-        grid: {
-            left: '3%',
-            right: '3%'
-        },
-        title: {
-            text: '每小时请求次数',
-            x: "left",
-            y: "2%"
-        },
-        xAxis: {
-            data: []
-        },
-        yAxis: {},
-        series: [{
-            type: 'line',
-            name: "请求次数",
-            data: []
-        }]
-    };
-
-    global.DayStateTimesBar.setOption(global.DayStateTimesBarOption);
-
-    global.DayStateTimesBar.showLoading("default", {
-        text: '',
-        color: '#FFF',
-        textColor: '#FFF',
-        maskColor: 'rgba(0, 0, 0, 0.01)',
-        zlevel: 0
-    });
-
-    // 24小时平均响应时间 ms
-    global.DayStateAvgBar = echarts.init(document.getElementById('DayStateAvgBar'), 'macarons');
-
-    global.DayStateAvgBarOption = {
-        color: ['#af91e1'],
-        tooltip: {},
-        legend: {
-            data: ['响应时间']
-        },
-        grid: {
-            left: '3%',
-            right: '3%'
-        },
-        title: {
-            text: '每小时平均响应时间 ms',
-            x: "left",
-            y: "2%"
-        },
-        xAxis: {
-            data: []
-        },
-        yAxis: {},
-        series: [{
-            type: 'line',
-            name: "响应时间",
-            data: []
-        }]
-    };
-
-    global.DayStateAvgBar.setOption(global.DayStateAvgBarOption);
-
-    global.DayStateAvgBar.showLoading("default", {
-        text: '',
-        color: '#FFF',
-        textColor: '#FFF',
-        maskColor: 'rgba(0, 0, 0, 0.01)',
-        zlevel: 0
-    });
+   
 
 
 
@@ -342,7 +263,7 @@ function InitChart() {
 
     global.FastARTChartOption = {
         title: {
-            text: '平均响应时间最快 TOP' + global.top,
+            text: '平均处理时间最快 TOP' + global.top,
             x: "left",
             y: "2%"
         },
@@ -380,7 +301,7 @@ function InitChart() {
         },
         series: [
             {
-                name: '平均响应时间',
+                name: '平均处理时间',
                 type: 'bar',
                 barWidth: 12,
                 itemStyle: {
@@ -398,7 +319,7 @@ function InitChart() {
 
     global.SlowARTChartOption = {
         title: {
-            text: '平均响应时间最慢 TOP' + global.top,
+            text: '平均处理时间最慢 TOP' + global.top,
             x: "left",
             y: "2%"
         },
@@ -436,7 +357,7 @@ function InitChart() {
         },
         series: [
             {
-                name: '平均响应时间',
+                name: '平均处理时间',
                 type: 'bar',
                 barWidth: 12,
                 itemStyle: {
@@ -447,42 +368,8 @@ function InitChart() {
         ]
     };
 
-    global.SlowARTChart.setOption(global.SlowARTChartOption);
-
-
-
-
-    // 最近每天请求数量
-    global.LatelyDayChart = echarts.init(document.getElementById('LatelyDayChart'), 'macarons');
-
-    global.LatelyDayChartOption = {
-        tooltip: {},
-        legend: {
-            data: ['每天请求数量']
-        },
-        grid: {
-            left: '3%',
-            top: '20%',
-            right: '3%'
-        },
-        title: {
-            text: '每天请求数量',
-            x: "left",
-            y: "2%",
-            subtext: ""
-        },
-        xAxis: {
-            data: []
-        },
-        yAxis: {},
-        series: [{
-            type: 'line',
-            name: "请求次数",
-            data: []
-        }]
-    };
-
-    global.LatelyDayChart.setOption(global.LatelyDayChartOption);
+    global.SlowARTChart.setOption(global.SlowARTChartOption);  
+   
 }
 
 //Ajax获取页面数据
@@ -500,75 +387,8 @@ function GetData() {
             });
         }
     })
-}
-
-function GetDayChart() {
-
-    var node = [];
-
-    var day = $(".day").val();
-
-    $(".node-row").find(".btn-info").each(function (i, item) {
-        node.push($(item).text());
-    });
-
-
-    $.ajax({
-        url: "/Data/GetDayStateBar",
-        type: "POST",
-        data: {
-            day: day,
-            node: node.join(",")
-        },
-        success: function (result) {
-
-            // 24 小时请求次数
-            global.DayStateTimesBar.hideLoading();
-            global.DayStateTimesBarOption.xAxis.data = result.data.hours;
-            global.DayStateTimesBarOption.series[0].data = result.data.timesList;
-            global.DayStateTimesBar.setOption(global.DayStateTimesBarOption);
-
-
-            // 24小时请求平均时长
-            global.DayStateAvgBar.hideLoading();
-            global.DayStateAvgBarOption.xAxis.data = result.data.hours;
-            global.DayStateAvgBarOption.series[0].data = result.data.avgList;
-            global.DayStateAvgBar.setOption(global.DayStateAvgBarOption);
-        }
-    })
-
-}
-
-function GetLatelyChart() {
-
-    var node = [];
-
-    var start = $(".start").val();
-    var end = $(".end").val();
-
-    $(".node-row").find(".btn-info").each(function (i, item) {
-        node.push($(item).text());
-    });
-
-    $.ajax({
-        url: "/Data/GetLatelyDayChart",
-        type: "POST",
-        data: {
-            start: start,
-            end: end,
-            node: node.join(",")
-        },
-        success: function (result) {
-
-            global.LatelyDayChartOption.title.subtext = result.data.range;
-            global.LatelyDayChartOption.xAxis.data = result.data.time;
-            global.LatelyDayChartOption.series[0].data = result.data.value;
-            global.LatelyDayChart.setOption(global.LatelyDayChartOption);
-
-        }
-    })
-
-}
+}  
+ 
 
 function GetTOPRequestChart() {
 
@@ -610,6 +430,150 @@ function GetTOPRequestChart() {
         }
     });
 }
+
+function Loading(item) { 
+
+    item.showLoading("default", {
+        text: 'loading',
+        color: '#FFF',
+        textColor: '#FFF',
+        maskColor: 'rgba(0, 0, 0, 0.1)',
+        zlevel: 0
+    });  
+}
+
+
+function GetIndexChartA() { 
+
+    var start = $(".start").val();
+    var end = $(".end").val();
+
+    var node = [];
+
+    $(".node-row").find(".btn-info").each(function (i, item) {
+        node.push($(item).text());
+    });
+
+
+    Loading(global.StatusCodePie);
+    Loading(global.ResponseTimePie);
+    Loading(global.MostRequestChart);
+    Loading(global.Code500RequestChart); 
+    Loading(global.FastARTChart);
+    Loading(global.SlowARTChart); 
+
+    $.ajax({
+        url: "/Data/GetIndexChartA",
+        type: "POST",
+        data: {
+            start: start,
+            end: end,
+            node: node.join(","), 
+            top: global.top
+        },
+        success: function (result) { 
+
+            //=========================================
+            global.StatusCodePie.hideLoading();
+
+            global.StatusCodePieOption.series[0].data = result.data.statusCode;
+
+            global.StatusCodePieOption.legend.data = [];
+
+            $.each(result.data.statusCode, function (i, item) {
+                global.StatusCodePieOption.legend.data.push(item.name);
+            });
+
+            global.StatusCodePie.setOption(global.StatusCodePieOption);
+
+
+            //========================================= 
+            global.ResponseTimePie.hideLoading();
+
+            global.ResponseTimePieOption.series[0].data = result.data.responseTime;
+
+            global.ResponseTimePieOption.legend.data = [];
+
+            $.each(result.data.responseTime, function (i, item) {
+                global.ResponseTimePieOption.legend.data.push(item.name);
+            });
+
+            global.ResponseTimePie.setOption(global.ResponseTimePieOption);  
+
+            // 最多 TOP15 ================================  
+
+            global.MostRequestChart.hideLoading();
+
+            global.MostRequestChartOption.yAxis.data = [];
+            global.MostRequestChartOption.series[0].data = [];
+
+            $.each(result.data.topRequest, function (i, item) {
+                global.MostRequestChartOption.yAxis.data.push(item.url + "    ");
+                global.MostRequestChartOption.series[0].data.push(item.total);
+            });
+
+            global.MostRequestChartOption.yAxis.data.reverse();
+            global.MostRequestChartOption.series[0].data.reverse();
+
+            global.MostRequestChart.setOption(global.MostRequestChartOption);  
+
+
+            // 错误率最高 TOP15 =========================== 
+            global.Code500RequestChart.hideLoading();
+            global.Code500RequestChartOption.yAxis.data = [];
+            global.Code500RequestChartOption.series[0].data = [];
+
+            $.each(result.data.topError500, function (i, item) {
+                global.Code500RequestChartOption.yAxis.data.push(item.url + "    ");
+                global.Code500RequestChartOption.series[0].data.push(item.total);
+            });
+
+            global.Code500RequestChartOption.yAxis.data.reverse();
+            global.Code500RequestChartOption.series[0].data.reverse();
+
+            global.Code500RequestChart.setOption(global.Code500RequestChartOption);   
+
+
+            
+            // 最快平均处理 TOP15 ============================
+            global.FastARTChartOption.yAxis.data = [];
+            global.FastARTChartOption.series[0].data = [];
+
+            $.each(result.data.art.fast, function (i, item) {
+                global.FastARTChartOption.yAxis.data.push(item.name + "    ");
+                global.FastARTChartOption.series[0].data.push(item.value);
+            });
+
+            global.FastARTChartOption.yAxis.data.reverse();
+            global.FastARTChartOption.series[0].data.reverse();
+
+            global.FastARTChart.setOption(global.FastARTChartOption);
+
+            global.FastARTChart.hideLoading();
+
+
+            // 最慢平均处理 TOP15 ============================
+            global.SlowARTChartOption.yAxis.data = [];
+            global.SlowARTChartOption.series[0].data = [];
+
+            $.each(result.data.art.slow, function (i, item) {
+                global.SlowARTChartOption.yAxis.data.push(item.name + "    ");
+                global.SlowARTChartOption.series[0].data.push(item.value);
+            });
+
+            global.SlowARTChartOption.yAxis.data.reverse();
+            global.SlowARTChartOption.series[0].data.reverse();
+
+            global.SlowARTChart.setOption(global.SlowARTChartOption); 
+
+            global.SlowARTChart.hideLoading(); 
+
+        }
+    })  
+
+}
+
+
 
 function GetTopCode500Chart() {
 
@@ -653,8 +617,7 @@ function GetTopCode500Chart() {
 
 
 
-}
-
+}  
 
 // 获取首页请求状态码图表
 function GetStatusCodePie() {
@@ -672,7 +635,7 @@ function GetStatusCodePie() {
         text: '',
         color: '#FFF',
         textColor: '#FFF',
-        maskColor: 'rgba(0, 0, 0, 0.01)',
+        maskColor: 'rgba(0, 0, 0, 0.1)',
         zlevel: 0
     });
 
@@ -750,7 +713,13 @@ function GetResponseTimePie() {
 
 
 // 获取首页面板数据
-function GetBoardData() {
+function GetBoardData() {   
+
+    $(".board-row").busyLoad("show", {
+        color: "#2baae8",
+        fontawesome: "fa fa-spinner fa-spin fa-3x fa-fw",
+        background: "rgba(0,0,0,0)",
+    });
 
     var start = $(".start").val();
     var end = $(".end").val();
@@ -771,7 +740,9 @@ function GetBoardData() {
         },
         success: function (result) {   
 
-        
+
+            $(".board-row").busyLoad("hide");
+
             $(".board-row").find("span").eq(0).text(result.data.total);
             $(".board-row").find("span").eq(1).text(result.data.art);
             $(".board-row").find("span").eq(2).text(result.data.code404);
@@ -806,7 +777,7 @@ function GetARTChart() {
         }, 
         success: function (result) {
 
-            // 最快平均响应 TOP15
+            // 最快平均处理 TOP15
             global.FastARTChartOption.yAxis.data = [];
             global.FastARTChartOption.series[0].data = [];
 
@@ -821,7 +792,7 @@ function GetARTChart() {
             global.FastARTChart.setOption(global.FastARTChartOption);
 
 
-            // 最慢平均响应 TOP15
+            // 最慢平均处理 TOP15
             global.SlowARTChartOption.yAxis.data = [];
             global.SlowARTChartOption.series[0].data = [];
 
@@ -845,24 +816,13 @@ function GetARTChart() {
 
 
 // 查询按钮点击
-function QueryClick() { 
-
-
-
+function QueryClick() {   
 
     ReSetTag();
 
-    GetBoardData();
-    GetStatusCodePie();
-    GetResponseTimePie();
+    GetBoardData();  
 
-
-    GetARTChart();
-    GetTopCode500Chart();
-    GetTOPRequestChart();
-
-    GetLatelyChart();    
-
+    GetIndexChartA();   
 
     //ReSetTag();  
     ////GetStatusCodePie();
@@ -940,18 +900,7 @@ function ReSetTag() {
 }
 
 
-//选择服务节点
-function check_node(item) {
 
-    if ($(item).hasClass("btn-info")) {
-        $(item).removeClass("btn-info");
-        $(item).addClass("btn-default");
-    }
-    else {
-        $(item).removeClass("btn-default");
-        $(item).addClass("btn-info");
-    }
-}
 
 //全选
 function select_all(item) {

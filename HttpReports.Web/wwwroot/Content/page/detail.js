@@ -42,8 +42,19 @@ function InitTable() {
         url: url,
         queryParamsType: '',
         sidePagination: "server",
-        pagination: true,
-        onPageChange: function (number, size) {  
+        pagination: true, 
+        onLoadSuccess: function (data) { 
+            $("#TableData").busyLoad("hide"); 
+        },
+        onPreBody: function (data) {
+
+            $("#TableData").busyLoad("show", {
+                color: "#000080",  
+                fontawesome: "fa fa-spinner fa-spin fa-3x fa-fw",
+                background: "rgba(0,0,0,0)",
+            }); 
+        },
+        onPageChange: function (number, size) {   
             localStorage.setItem("bootstarpSize", size);
         },
         columns: [
@@ -77,7 +88,7 @@ function InitTable() {
             },
             {
                 field: 'milliseconds',
-                title: '响应时间',
+                title: '处理时间',
                 align: 'center'
 
             },

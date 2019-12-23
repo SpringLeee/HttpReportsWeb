@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttpReports.Web.DataAccessors;
 using HttpReports.Web.DataContext;
 using HttpReports.Web.Filters;
+using HttpReports.Web.Job;
 using HttpReports.Web.Models;
 using HttpReports.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -19,8 +20,8 @@ namespace HttpReports.Web
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
+        {  
+             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -32,11 +33,9 @@ namespace HttpReports.Web
             { 
                 options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
-            });  
-           
+            });   
 
-            DependencyInjection(services);   
-            
+            DependencyInjection(services); 
 
             services.AddMvc(x => { 
                 // È«¾Ö¹ýÂËÆ÷

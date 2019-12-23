@@ -1,4 +1,5 @@
 ﻿ 
+$('[data-toggle="tooltip"]').tooltip();
 
 tippy('.serviceTip', {
     content: "<div class='tipbox'>服务节点是WebAPI请求的服务节点，点击选中和取消节点</div>",
@@ -44,4 +45,17 @@ function timeChange(k) {
         }
     });
 
+}
+
+//选择服务节点
+function check_node(item) {
+
+    if ($(item).hasClass("btn-info")) {
+        $(item).removeClass("btn-info");
+        $(item).addClass("btn-default");
+    }
+    else {
+        $(item).removeClass("btn-default");
+        $(item).addClass("btn-info");
+    }
 }
