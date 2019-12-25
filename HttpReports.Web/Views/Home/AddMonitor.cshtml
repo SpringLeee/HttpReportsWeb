@@ -1,0 +1,250 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+     List<string> nodes = ViewBag.nodes; 
+
+
+}
+
+
+<style type="text/css">
+
+    @@media screen and (min-width:1170px) {
+
+        .title, .desc, .rate {
+            width: 75% !important;
+        }
+    }
+
+    .tab-pane {
+        
+        margin-top:12px; 
+        padding:20px 15px;
+        border-radius:6px; 
+        border:1px solid #ccc;
+    }  
+
+</style>
+
+
+<div class="panel panel-default">
+
+    <div class="panel-body" style="padding-left:30px;padding-right:30px;padding-top:30px;min-height:720px;padding-bottom:30px">
+
+        <h3 style="margin-bottom:20px;">编辑任务</h3>
+
+        <div class="row">
+
+            <div class="panel panel-default">
+                <div class="panel-body" style="padding:20px 35px">
+
+                    <div class="row form-inline form">
+
+                        <div class="row" style="margin-left:0;margin-right:0;margin-top:15px">
+
+                            <div class="col-lg-9">
+                                <label style="width:80px" class="form-label">任务标题</label>
+                                <input type="text" class="form-control title">
+                            </div>
+
+                        </div> 
+
+                        <div class="row" style="margin-left:0;margin-right:0;margin-top:15px;">
+
+                            <div class="col-lg-9">
+                                <label style="width:80px" class="form-label">监控频率</label>
+                                <select class="form-control rate">
+                                    <option value="1">1分钟</option>
+                                    <option value="3">3分钟</option>
+                                    <option value="5">5分钟</option>
+                                    <option value="10">10分钟</option>
+                                    <option value="30">30分钟</option>
+                                    <option value="60">1小时</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-left:0;margin-right:0;margin-top:15px">
+
+                            <div class="col-lg-9">
+                                <label style="width:80px" class="form-label">邮件列表</label>
+                                <input type="text" class="form-control email">
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" style="margin-left:0;margin-right:0;margin-top:15px;">
+
+                            <div class="col-lg-9">
+                                <label style="width:80px" class="form-label">任务状态</label>
+                                <select class="form-control status">
+                                    <option value="1">开启</option>
+                                    <option value="0">关闭</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-left:0;margin-right:0;margin-top:15px;">
+
+                            <div class="col-lg-9 node-row">
+                                <label style="width:80px" class="form-label">服务节点</label>
+
+                                @foreach (var item in nodes)
+                                {
+                                    <button onclick="check_node(this)" style="width:120px;margin-right:10px;border-radius:4px;" class="btn btn-info service-button">@item</button>
+                                } 
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix">
+                    </div>
+
+
+                    <div id="wizard1" class="wizard-type1" style="margin-top:20px;">
+
+                        <div>
+
+                            <ul class="steps nav nav-pills">
+                                <li class="active"><a href="form-wizard.html#tab11" data-toggle="tab"><span class="badge badge-info"><i class="fa fa-star"></i></span> 响应超时配置</a></li>
+                                <li><a href="form-wizard.html#tab12" data-toggle="tab"><span class="badge badge-info"><i class="fa fa-credit-card"></i></span> 请求错误配置</a></li>
+                                <li><a href="form-wizard.html#tab13" data-toggle="tab"><span class="badge badge-info"><i class="fa fa-building"></i></span> IP异常配置 </a></li>
+                            </ul>
+
+
+                        </div>
+
+                        <div class="tab-content">
+
+                            <div id="tab11" class="tab-pane active" >
+
+                                <div class="row form-inline form">
+
+                                    <div class="col-sm-12">
+
+                                        <div class="col-lg-3">
+                                            <label class="form-label">任务状态</label>
+                                            <select class="form-control RtStatus">
+                                                <option value="1">开启</option>
+                                                <option value="0">关闭</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-12" style="margin-top:20px">
+
+                                        <div class="col-sm-3">
+                                            <label class="form-label">超时时间 ms</label>
+                                            <input type="text" class="form-control RtTime"> 
+                                        </div> 
+
+                                        <div class="col-sm-3"> 
+                                            <label class="form-label">超时率</label>
+                                            <input type="text" class="form-control RtRate">  
+                                        </div> 
+
+                                    </div> 
+
+                                </div> 
+
+                            </div> 
+
+                            <div class="tab-pane" id="tab12">
+
+                                <div class="row form-inline form">
+
+                                    <div class="col-sm-12">
+
+                                        <div class="col-lg-3">
+                                            <label class="form-label">任务状态</label>
+                                            <select class="form-control HttpStatus">
+                                                <option value="1">开启</option>
+                                                <option value="0">关闭</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-12" style="margin-top:20px">
+
+                                        <div class="col-sm-3">
+                                            <label class="form-label">HTTP状态码</label>
+                                            <input type="text" class="form-control HttpCodes">
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <label class="form-label">命中率</label>
+                                            <input type="text" class="form-control HttpRate">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane" id="tab13">
+
+                                <div class="row form-inline form">
+
+                                    <div class="col-sm-12">
+
+                                        <div class="col-lg-3">
+                                            <label class="form-label">任务状态</label>
+                                            <select class="form-control IPStatus">
+                                                <option value="1">开启</option>
+                                                <option value="0">关闭</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-12" style="margin-top:20px">
+
+                                        <div class="col-sm-3">
+                                            <label class="form-label">IP白名单</label>
+                                            <input type="text" class="form-control IPWhiteList">
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <label class="form-label">IP重复率</label>
+                                            <input type="text" class="form-control IPRate">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div> 
+
+                        </div>
+
+                        <input type="hidden" class="id" value="0" />
+
+                        <div class="actions" style="margin-top:15px;margin-bottom:8px;"> 
+                            <button onclick="Save()" type="button" class="btn btn-success button-previous"> 保 存 </button> 
+                        </div> 
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/Content/common/main.js"></script>
+<script src="~/Content/page/addmonitor.js"></script>

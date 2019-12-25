@@ -6,7 +6,7 @@ window.alert = function (msg) {
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 1500
+        'closeTime': 2000
     });    
 } 
 
@@ -14,19 +14,19 @@ window.alert = function (msg,callback) {
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 1500
+        'closeTime': 2000
     }); 
     
     setTimeout(function () {
         callback();
-    }, 1500); 
+    }, 2000); 
 }  
  
 function Show(msg) {
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 1500 
+        'closeTime': 2000 
     })  
 }  
 
@@ -34,13 +34,13 @@ function Show(msg,fun) {
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 1500
+        'closeTime': 2000
     });
 
     if (fun != 0) {
         setTimeout(function () {
             fun()
-        }, 1500); 
+        }, 2000); 
     } 
 }  
  

@@ -21,6 +21,26 @@ namespace HttpReports.Web.Implements
             }  
         }
 
+
+        public static bool IsNumber(this string str)
+        {
+            double i = 0;
+
+            try
+            {
+                i = Convert.ToDouble(str);
+            }
+            catch (Exception ex)
+            {
+                return false; 
+            }
+
+            return true;
+        
+        }
+
+      
+
         public static double ToDouble(this string str)
         {
             try

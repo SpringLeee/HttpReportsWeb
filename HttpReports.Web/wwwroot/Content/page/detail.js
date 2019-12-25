@@ -2,9 +2,7 @@
 GoTop();
 
 laydate.render({ elem: '.start',  theme: '#67c2ef' });
-laydate.render({ elem: '.end',  theme: '#67c2ef' });
-
-GetNodes();
+laydate.render({ elem: '.end',  theme: '#67c2ef' }); 
 
 InitTable();
 
@@ -26,6 +24,8 @@ function GetNodes() {
         }
     })
 }
+
+
 // 初始化Table
 function InitTable() {
 

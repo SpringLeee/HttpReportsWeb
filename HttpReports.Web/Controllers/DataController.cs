@@ -404,6 +404,15 @@ namespace HttpReports.Web.Controllers
 
             return Json(new { total = totalCount, rows = list });
 
-        }   
+        } 
+
+        public IActionResult EditJob(JobRequest request)
+        {
+            var vaild = _dataService.VaildJob(request);
+
+            if (vaild.code != 1) return Json(vaild);
+
+            return Json(new Result(1, "ok")); 
+        }  
     }
 }

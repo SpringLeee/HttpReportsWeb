@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+     List<string> nodes = ViewBag.nodes; 
 }
 
 
@@ -50,11 +52,17 @@
 
                             @*<button type="button" onclick="select_all(this)" style="width:60px;margin-right:8px;margin-left:8px" class="btn btn-success btn-xs">全选</button>
 
-                                <button type="button" onclick="select_reverse(this)" style="width:60px;margin-right:8px;" class="btn btn-success btn-xs">反选</button>*@
+            <button type="button" onclick="select_reverse(this)" style="width:60px;margin-right:8px;" class="btn btn-success btn-xs">反选</button>*@
 
                         </div>
 
+
                         <div class="col-sm-12 node-row" style="margin-top:8px;margin-bottom:8px;min-height:44px">
+
+                            @foreach (var item in nodes)
+                            {
+                                <button onclick="check_node(this)" style="width:120px;margin-left:20px;border-radius:4px;" class="btn btn-info service-button">@item</button>
+                            }
 
                         </div>
 
