@@ -1,4 +1,6 @@
-﻿ 
+﻿
+initTheme(); 
+
 $('[data-toggle="tooltip"]').tooltip();
 
 tippy('.serviceTip', {
@@ -59,3 +61,32 @@ function check_node(item) {
         $(item).addClass("btn-info");
     }
 }
+
+
+function ChangeTheme(item) {
+
+    var key = $(item).attr("data-key");
+
+    localStorage.setItem("httpreports.theme", key);  
+
+    if ($(".theme").attr("href").indexOf(key) < 0) { 
+        $(".theme").attr("href", "/Content/css/theme/" + key + ".css");
+    }  
+
+} 
+
+function initTheme() { 
+
+    var current = localStorage.getItem("httpreports.theme");
+
+    if (current == null || current == "" || current == undefined) {
+        $("#theme_dark").remove();
+    }
+    else {
+
+        if (current == "light") { $("#theme_dark").remove(); } 
+        if (current == "dark") { $("#theme_light").remove(); }  
+
+    }  
+}
+

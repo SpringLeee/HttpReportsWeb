@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using HttpReports.Web.DataContext;
 using HttpReports.Web.Implements;
 using HttpReports.Web.Models;
@@ -307,6 +308,232 @@ namespace HttpReports.Web.DataAccessors
             string sql = "Select * From RequestInfo " + where;
 
             return conn.GetListBySql<RequestInfo>(sql, "id desc", request.pageSize, request.pageNumber, out totalCount, request); 
-        }   
+        }
+
+        public void AddJob(Models.Job job)
+        {
+            conn.Insert<Models.Job>(job);
+        }
+
+        public List<Models.Job> GetJobs()
+        {
+            using (var con = new SqlConnection(conn.ConnectionString))
+            { 
+                return con.GetAll<Models.Job>().ToList(); 
+            }  
+        }
+
+        public CheckModel CheckRt(Models.Job job, int minute)
+        {
+            using (var con = new SqlConnection(conn.ConnectionString))
+            {
+                string where = " where 1=1 ";
+
+                where = BuildWhereByTime(where, minute); 
+                where = BuildWhereByNode(where, job.Servers);
+
+                string Time = DateTime.Now.AddMinutes(-minute).ToString("yyyy-MM-dd HH:mm:ss") + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); 
+
+                int now = con.QueryFirstOrDefault<int>($" Select Count(1) From RequestInfo {where} AND Milliseconds >= {job.RtTime} ");
+
+                int current = con.QueryFirstOrDefault<int>($"Select Count(1) From RequestInfo {where} ");
+
+                if (now == 0 || current == 0)
+                {
+                    return new CheckModel();
+                }
+
+                double percent = Math.Round(Convert.ToDouble(now) / Convert.ToDouble(current), 6);
+
+                if (percent < job.RtStatus * 0.01)
+                {
+                    return new CheckModel();
+                }
+                else
+                {
+                    return new CheckModel()
+                    {
+                        Ok = false,
+                        Value = percent.ToString(),
+                        Time = Time
+                    };
+                } 
+            } 
+        }
+
+        public CheckModel CheckHttp(Models.Job job, int minute)
+        {
+            using (var con = new SqlConnection(conn.ConnectionString))
+            {
+                string where = " where 1=1 ";
+
+                where = BuildWhereByTime(where, minute); 
+                where = BuildWhereByNode(where, job.Servers);
+
+                string Time = DateTime.Now.AddMinutes(-minute).ToString("yyyy-MM-dd HH:mm:ss") + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                var now = con.QueryFirstOrDefault<int>($" Select Count(1) From RequestInfo {where} {BuildWhereByHttpCode(job.HttpCodes)} ");
+
+                var current = con.QueryFirstOrDefault<int>($" Select Count(1) From RequestInfo {where} ");
+
+                if (now == 0 || current == 0)
+                {
+                    return new CheckModel();
+                }
+
+                double percent = Math.Round(Convert.ToDouble(now) / Convert.ToDouble(current), 6);
+
+                if (percent < job.HttpRate * 0.01)
+                {
+                    return new CheckModel();
+                }
+                else
+                {
+                    return new CheckModel()
+                    {
+                        Ok = false,
+                        Value = percent.ToString(),
+                        Time = Time
+                    };
+                }
+
+            }  
+        }
+
+        public CheckModel CheckIP(Models.Job job, int minute)
+        {
+            using (var con = new SqlConnection(conn.ConnectionString))
+            {
+                string where = " where 1=1 ";
+
+                where = BuildWhereByTime(where, minute); 
+                where = BuildWhereByNode(where, job.Servers);
+
+                string Time = DateTime.Now.AddMinutes(-minute).ToString("yyyy-MM-dd HH:mm:ss") + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                var now = con.QueryFirstOrDefault<int>($"Select TOP 1 COUNT(1) From RequestInfo {where} {BuildWhereByIP(job.IPWhiteList)} Group By IP Order BY COUNT(1) Desc");
+
+                var current = con.QueryFirstOrDefault<int>($" Select Count(1) From RequestInfo {where} {BuildWhereByIP(job.IPWhiteList)} ");
+
+                if (now == 0 || current == 0)
+                {
+                    return new CheckModel();
+                }
+
+                double percent = Math.Round(Convert.ToDouble(now) / Convert.ToDouble(current), 6);
+
+                if (percent < job.IPRate * 0.01)
+                {
+                    return new CheckModel();
+                }
+                else
+                {
+                    return new CheckModel()
+                    {
+                        Ok = false,
+                        Value = percent.ToString(),
+                        Time = Time
+                    };
+                }  
+            } 
+        }  
+
+        public CheckModel CheckRequestCount(Models.Job job, int minute)
+        {
+            using (var con = new SqlConnection(conn.ConnectionString))
+            {
+                string where = " where 1=1 ";
+
+                where = BuildWhereByTime(where, minute); 
+                where = BuildWhereByNode(where, job.Servers);
+                string Time = DateTime.Now.AddMinutes(-minute).ToString("yyyy-MM-dd HH:mm:ss") + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                var now = con.QueryFirstOrDefault<int>($" Select Count(1) From RequestInfo {where} ");
+
+                if (now < job.RequestCount || now == 0)
+                {
+                    return new CheckModel();
+                }
+                else
+                {
+                    return new CheckModel()
+                    {
+                        Ok = false,
+                        Value = now.ToString(),
+                        Time = Time
+                    };
+
+                } 
+            } 
+        }
+
+        private string BuildWhereByTime(string where,int minute)
+        {
+            var start = DateTime.Now.AddMinutes(-minute).ToString("yyyy-MM-dd HH:mm:ss");
+            var end = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            where = where + $" AND CreateTime >= '{start}' AND CreateTime < '{end}' ";
+
+            return where;
+        }
+
+        private string BuildWhereByNode(string where,string node)
+        {
+            if (node.IsEmpty())
+            {
+                return where;
+            }
+
+            string nodes = string.Join(",", node.Split(",").ToList().Select(x => "'" + x + "'"));
+
+            where = where + $" AND Node IN ({nodes})";
+
+            return where;
+
+        } 
+
+        private string BuildWhereByHttpCode(string codes)
+        {
+            if (codes.IsEmpty())
+            {
+                return string.Empty;
+            }
+
+            string code = string.Join(",", codes.Split(",").ToList().Select(x =>x));
+
+            string where =  $" AND StatusCode In ({code})  ";
+
+            return where;  
+        }
+
+        private string BuildWhereByIP(string iplist)
+        {
+            if (iplist.IsEmpty())
+            {
+                return string.Empty;
+            }
+
+            string ip = string.Join(",", iplist.Split(",").ToList().Select(x => "'" + x + "'"));
+
+            string where =  $" AND IP Not IN ({ip})";
+
+            return where;  
+        }
+
+        public Models.Job GetJob(int Id)
+        {
+            return conn.Get<Models.Job>(Id);
+        }
+
+        public void UpdateJob(Models.Job job)
+        {
+            conn.Update<Models.Job>(job);
+        }
+
+        public void DeleteJob(Models.Job job)
+        {
+            conn.Delete<Models.Job>(job);
+        }
+
     }
 }

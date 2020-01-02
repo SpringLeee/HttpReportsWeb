@@ -35,10 +35,10 @@
 
     <div class="panel-body" style="padding-left:30px;padding-right:30px;padding-top:30px;min-height:720px;padding-bottom:30px">
 
-        <div class="row">
+        <div class="row" style="padding-left:13px;padding-right:13px">
 
             <div class="panel panel-default">
-                <div class="panel-body" style="padding-bottom:20px">
+                <div class="panel-body shadow-box" style="padding-bottom:20px">
 
                     <div class="form-inline form">
 
@@ -52,7 +52,7 @@
 
                             @*<button type="button" onclick="select_all(this)" style="width:60px;margin-right:8px;margin-left:8px" class="btn btn-success btn-xs">全选</button>
 
-            <button type="button" onclick="select_reverse(this)" style="width:60px;margin-right:8px;" class="btn btn-success btn-xs">反选</button>*@
+                        <button type="button" onclick="select_reverse(this)" style="width:60px;margin-right:8px;" class="btn btn-success btn-xs">反选</button>*@
 
                         </div>
 
@@ -114,6 +114,14 @@
 
                     </div>
 
+                </div>
+            </div>
+
+
+            <div class="panel panel-default">
+                <div class="panel-body shadow-box" style="padding-bottom:20px">
+
+
                     <div class="col-sm-12" style="margin-top:24px;">
 
                         <table id="TableData" class="table table-bordered" style="background-color:#FFF;width:100%;margin:0 auto; clear:both;border-top:2px solid #67c2ef;"></table>
@@ -122,12 +130,13 @@
 
                 </div>
             </div>
+           
 
         </div>
 
-    </div>
+            </div>
 
-</div>
+        </div>
 
-<script src="/Content/common/main.js"></script> 
-<script src="/Content/page/detail.js"></script>
+ 
+<script src="/Content/page/detail.js?ver=1.1"></script>

@@ -388,6 +388,37 @@ namespace HttpReports.Web.Controllers
             return Json(new Result(1, "ok",new { fast,slow }));  
         }
 
+        public IActionResult GetJob(int Id)
+        {
+            var job = _dataService.GetJob(Id) ?? new Models.Job() ;
+
+            JobRequest request = new JobRequest() {
+
+                Id = job.Id,
+                Title = job.Title,
+                Rate = _dataService.ParseJobCron(job.CronLike),
+                Status =  job.Status,
+                Email = job.Emails,
+                Mobiles = job.Mobiles,
+                Node = job.Servers,
+                RtStatus = job.RtStatus,
+                RtTime = job.RtTime.ToString(),
+                RtRate = (job.RtRate * 100) .ToString(),
+                HttpStatus = job.HttpStatus,
+                HttpCodes  = job.HttpCodes,
+                HttpRate = (job.HttpRate * 100).ToString(),
+                IPStatus = job.IPStatus,
+                IPWhiteList = job.IPWhiteList,
+                IPRate = (job.IPRate * 100).ToString(),
+                RequestStatus = job.RequestStatus,
+                RequestCount = job.RequestCount.ToString() 
+            
+            };
+
+            return Json(new Result(1, "ok",request)); 
+        }
+
+
         public IActionResult GetRequestList(GetRequestListRequest request)
         {
             int totalCount = 0;
@@ -408,11 +439,57 @@ namespace HttpReports.Web.Controllers
 
         public IActionResult EditJob(JobRequest request)
         {
-            var vaild = _dataService.VaildJob(request);
+            var vaild = _dataService.VaildJob(request); 
 
             if (vaild.code != 1) return Json(vaild);
 
+            var job = _dataService.ParseJobRequest(request);
+
+            if (request.Id > 0 )
+            {
+                var model = _dataService.GetJob(request.Id);
+                job.CreateTime = model.CreateTime; 
+                _dataService.UpdateJob(job);
+            }
+            else
+            {
+                _dataService.AddJob(job);
+
+            }
+
             return Json(new Result(1, "ok")); 
-        }  
+        }
+
+        public IActionResult ChangeJobState(int Id)
+        {
+            var job = _dataService.GetJob(Id);
+
+            if (job == null)
+            {
+                return Json(new Result(1, "ok"));
+            }
+
+            job.Status = job.Status == 1 ? 0 : 1;
+
+            _dataService.UpdateJob(job);
+
+            return Json(new Result(1, "ok")); 
+        }
+
+        public IActionResult DeleteJob(int Id)
+        {
+            var job = _dataService.GetJob(Id);
+
+            if (job == null)
+            {
+                return Json(new Result(1, "ok"));
+            } 
+
+            _dataService.DeleteJob(job);
+
+            return Json(new Result(1, "ok"));
+
+        } 
+
     }
 }

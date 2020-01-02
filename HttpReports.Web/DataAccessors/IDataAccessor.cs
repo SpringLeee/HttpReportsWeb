@@ -35,5 +35,25 @@ namespace HttpReports.Web.DataAccessors
         List<RequestInfo> GetRequestList(GetRequestListRequest request, out int totalCount);
 
         List<EchartPineDataModel> GetMonthDataByYear(GetIndexDataRequest request);
+
+        void AddJob(Models.Job job);
+
+        void UpdateJob(Models.Job job);
+
+        void DeleteJob(Models.Job job);
+
+        List<Models.Job> GetJobs();
+
+        Models.Job GetJob(int Id);
+
+
+        CheckModel CheckRt(Models.Job job,int minute);
+
+        CheckModel CheckHttp(Models.Job job,int minute);
+
+        CheckModel CheckIP(Models.Job job,int minute);
+
+        CheckModel CheckRequestCount(Models.Job job,int minute); 
+
     }
 }

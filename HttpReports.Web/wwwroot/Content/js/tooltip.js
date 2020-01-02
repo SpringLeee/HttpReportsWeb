@@ -75,14 +75,14 @@ var ToolTip = {
                     top: topPos,
                     left: leftPos,
                     'font-size': settings.fontSize,
-                    'background-color': (settings.theme == 'dark') ? '#000' : '#fff',
+                    'background-color': (settings.theme == 'macarons') ? '#000' : '#fff',
                     color: settings.textColor,
                     'font-family': settings.fontFamily,
                     'box-shadow': '0px 3px 10px ' + settings.shadowColor
                 });
 
 
-                if (settings.theme == 'dark')
+                if (settings.theme == 'macarons')
                 {
                     tipElement.addClass('tip-theme-dark');
                 }
@@ -276,14 +276,14 @@ $(function($){
             top: topPos,
             left: leftPos,
             'font-size': settings.fontSize,
-            'background-color': (settings.theme == 'dark') ? '#000' : '#fff',
+            'background-color': (settings.theme == 'macarons') ? '#000' : '#fff',
             color: settings.textColor,
             'font-family': settings.fontFamily,
             'box-shadow': '0px 3px 10px ' + settings.shadowColor
         });
 
 
-        if (settings.theme == 'dark')
+        if (settings.theme == 'macarons')
         {
             tipElement.addClass('tip-theme-dark');
         }

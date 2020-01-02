@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttpReports.Web.DataAccessors;
 using HttpReports.Web.DataContext;
 using HttpReports.Web.Filters;
+using HttpReports.Web.Implements;
 using HttpReports.Web.Job;
 using HttpReports.Web.Models;
 using HttpReports.Web.Services;
@@ -63,18 +64,35 @@ namespace HttpReports.Web
 
         private void DependencyInjection(IServiceCollection services)
         {
-            services.AddSingleton<HttpReportsConfig>();  
+            services.AddSingleton<HttpReportsConfig>();
+            services.AddSingleton<JobService>();
+            services.AddSingleton<ScheduleService>();
+
             services.AddTransient<DBFactory>();
 
-            services.AddTransient<DataService>();
+            services.AddTransient<DataService>(); 
+          
+            // 注册数据库访问类
+            RegisterDBService(services);
+
+
+            // 初始化系统服务
+            InitWebService(services); 
+        }
+
+        private void InitWebService(IServiceCollection services)
+        { 
+            var provider = services.BuildServiceProvider();
+
+            ServiceContainer.provider = provider; 
 
             // 初始化数据库表
-            services.BuildServiceProvider().GetService<DBFactory>().InitDB();
+            provider.GetService<DBFactory>().InitDB();
 
-            // 注册数据库访问类
-            RegisterDBService(services);  
+            // 开启后台任务
+            provider.GetService<JobService>().Start();
 
-        }
+        } 
 
         private void RegisterDBService(IServiceCollection services)
         {
@@ -82,11 +100,11 @@ namespace HttpReports.Web
 
             if (dbType.ToLower() == "sqlserver")
             {
-                services.AddScoped<IDataAccessor, DataAccessorSqlServer>();
+                services.AddTransient<IDataAccessor, DataAccessorSqlServer>();
             }  
             else if (dbType.ToLower() == "mysql")
             {
-                services.AddScoped<IDataAccessor,DataAccessorMySql>(); 
+                services.AddTransient<IDataAccessor,DataAccessorMySql>(); 
             }
             else
             {

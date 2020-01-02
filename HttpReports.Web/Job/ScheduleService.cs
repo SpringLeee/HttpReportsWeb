@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HttpReports.Web.Job
 {
-    public class ScheduleHelper
+    public class ScheduleService
     {
         // 调度器
-        private IScheduler scheduler = null;
+        public IScheduler scheduler = null;
 
-        public ScheduleHelper()
+        public ScheduleService()
         {
             //初始化调度器
 
@@ -27,12 +27,12 @@ namespace HttpReports.Web.Job
             var cron = new T().cron;
 
             if (CronExpression.IsValidExpression(cron))
-            {
-                var job = JobBuilder.Create<T>().Build();
+            {  
+                var job = JobBuilder.Create<T>().Build();   
 
-                var trigger = TriggerBuilder.Create().WithCronSchedule(cron).Build();
+                var trigger = TriggerBuilder.Create().WithCronSchedule(cron).Build();  
 
-                scheduler.ScheduleJob(job, trigger);
+                scheduler.ScheduleJob(job, trigger);  
 
             }
         }

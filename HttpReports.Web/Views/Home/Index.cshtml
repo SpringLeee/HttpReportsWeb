@@ -3,18 +3,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     List<string> nodes = ViewBag.nodes;
-}
-
+} 
+ 
 
 
 <div class="panel panel-default"> 
     
     <div class="panel-body" style="padding-left:30px;padding-right:30px;padding-top:30px;min-height:720px">
 
-        <div class="row">
+        <div class="row" style="padding-left:13px;padding-right:13px">
 
             <div class="panel panel-default">
-                <div class="panel-body" style="padding-bottom:20px">
+                <div class="panel-body shadow-box" style="padding-bottom:20px">
 
                     <div class="form-inline form">
 
@@ -83,68 +83,72 @@
 
         </div>
 
-        <div class="row board-row" style="margin-top:30px"> 
+        <div class="row" style="margin-top:30px;padding-left:13px;padding-right:13px"> 
 
-            <p style="padding-left:20px;color:#3c763d">
-                时间：<b></b>
+            <div class="board-row panel panel-default panel-body shadow-box">
 
-            </p>
+                <p style="padding-left:20px;color:#3c763d">
+                    时间：<b></b>
 
-            <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12"> 
+                </p>
 
-                <div class="smallstat teal-bg">
+                <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
 
-                    <b class="glyphicon glyphicon-info-sign badgeIcon" data-toggle="tooltip" data-placement="auto" title="请求次数是所有的接口请求次数,包括404,500等"></b>
+                    <div class="smallstat teal-bg">
 
-                    <b><span class="value">0</span></b>
-                    <h4>请求次数</h4>
+                        <b class="glyphicon glyphicon-info-sign badgeIcon" data-toggle="tooltip" data-placement="auto" title="请求次数是所有的接口请求次数,包括404,500等"></b>
 
+                        <b><span class="value">0</span></b>
+                        <h4>请求次数</h4>
+
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
-                <div class="smallstat blue-bg">
+                <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
+                    <div class="smallstat blue-bg">
 
-                    <b class="glyphicon glyphicon-info-sign badgeIcon" data-toggle="tooltip" data-placement="auto" title="处理时间是接口处理的时间，不能看做处理时间"></b>
+                        <b class="glyphicon glyphicon-info-sign badgeIcon" data-toggle="tooltip" data-placement="auto" title="处理时间是接口处理的时间，不能看做处理时间"></b>
 
-                    <b><span class="value">0</span></b>
-                    <h4>平均处理时间 (ms)</h4>
+                        <b><span class="value">0</span></b>
+                        <h4>平均处理时间 (ms)</h4>
 
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
-                <div class="smallstat purple-bg">
+                <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
+                    <div class="smallstat purple-bg">
 
-                    <b><span class="value">0</span></b>
-                    <h4>404</h4>
+                        <b><span class="value">0</span></b>
+                        <h4>404</h4>
 
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
-                <div class="smallstat orange-bg">
+                <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
+                    <div class="smallstat orange-bg">
 
-                    <b><span class="value">0</span></b>
-                    <h4>500</h4>
+                        <b><span class="value">0</span></b>
+                        <h4>500</h4>
 
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
-                <div class="smallstat blue-bg">
-                    <b><span class="value">0</span></b>
-                    <h4>错误率占比</h4>
+                <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
+                    <div class="smallstat blue-bg">
+                        <b><span class="value">0</span></b>
+                        <h4>错误率占比</h4>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
-                <div class="smallstat purple-bg">
-                    <b><span class="value">0</span></b>
-                    <h4>接口总数 (已请求)</h4>
+                <div class="col-lg-2 col-sm-6 col-xs-6 col-xxs-12">
+                    <div class="smallstat purple-bg">
+                        <b><span class="value">0</span></b>
+                        <h4>接口总数 (已请求)</h4>
+                    </div>
                 </div>
-            </div>
+
+            </div> 
 
         </div> 
 
@@ -179,7 +183,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body shadow-box">
 
-                        <div class="col-sm-12" style="padding-left:32px;margin-bottom:10px">
+                        <div class="col-sm-12" style="padding-left:32px;">
 
                             <div class="row form-inline">
 
@@ -269,6 +273,6 @@
 </div>
 
 
-<script src="/Content/common/main.js"></script>
-<script src="/Content/page/index.js"></script> 
+ 
+<script src="/Content/page/index.js?ver=1.1"></script> 
  

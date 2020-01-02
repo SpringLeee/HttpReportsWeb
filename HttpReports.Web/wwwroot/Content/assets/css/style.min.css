@@ -48,9 +48,9 @@ h6 {
 hr {
   border-top: 1px solid #eeeeee;
 }
-.main {  	
-  background:#e6e8ea;
-  padding: 70px 19px 10px 260px;
+.main {
+    background: #e6e8ea;
+    padding: 60px 0px 10px 244px;
 }
 .page-header {
   margin: 12px 0 20px;
@@ -575,8 +575,7 @@ border-color : #79859b;
   background-color: none;
 }
 .navbar .navbar-nav li a i:hover {
-  color: #75b9e6;
-  font-size: 25px;
+  color: #75b9e6; 
 }
 .navbar .navbar-nav li a .badge {
   background: #ff5454;
@@ -1820,9 +1819,9 @@ body.modal-open,
   border-width: 1px 1px 2px;
   border-style: solid;
   border-top: none;
-  border-right-color: #ccc!important;
-  border-bottom-color: #ccc!important;
-  border-left-color: #ccc!important;
+  border-right-color: #ccc ;
+  border-bottom-color: #ccc ;
+  border-left-color: #ccc ;
 }
 .panel .panel-body.no-padding {
   padding: 0;

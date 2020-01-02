@@ -2,31 +2,32 @@
 
 var M = {};   
 
-window.alert = function (msg) { 
+window.alert = function (msg) {  
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 2000
+        'closeTime': 1500
     });    
 } 
 
-window.alert = function (msg,callback) { 
+window.alert = function (msg, callback = () => { }) {   
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 2000
-    }); 
-    
+        'closeTime': 1500
+    });   
+
     setTimeout(function () {
         callback();
-    }, 2000); 
+    }, 2000);  
+   
 }  
  
 function Show(msg) {
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 2000 
+        'closeTime': 1500 
     })  
 }  
 
@@ -34,13 +35,13 @@ function Show(msg,fun) {
 
     M.dialog1 = jqueryAlert({
         'content': msg,
-        'closeTime': 2000
+        'closeTime': 1500
     });
 
     if (fun != 0) {
         setTimeout(function () {
             fun()
-        }, 2000); 
+        }, 1500); 
     } 
 }  
  
