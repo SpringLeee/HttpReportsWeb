@@ -1,15 +1,25 @@
 ﻿
+
+
+var httpreports = {};  
+httpreports.chart_theme = "macarons";
+
 initTheme(); 
 
-$('[data-toggle="tooltip"]').tooltip();
+$(function () {  
 
-tippy('.serviceTip', {
-    content: "<div class='tipbox'>服务节点是WebAPI请求的服务节点，点击选中和取消节点</div>",
-    arrow: true,
-    size: "large",
-    inertia: true,
-    placement: "right"
-})  
+    $('[data-toggle="tooltip"]').tooltip();
+
+    tippy('.serviceTip', {
+        content: "<div class='tipbox'>服务节点是WebAPI请求的服务节点，点击选中和取消节点</div>",
+        arrow: true,
+        size: "large",
+        inertia: true,
+        placement: "right"
+    })  
+
+}); 
+
 
 function timeChange(k) {
 
@@ -80,9 +90,13 @@ function initTheme() {
     var current = localStorage.getItem("httpreports.theme");
 
     if (current == null || current == "" || current == undefined) {
+       
         $("#theme_dark").remove();
+        httpreports.theme = "light";
     }
     else {
+
+        httpreports.chart_theme = current == "light" ? "macarons" : "dark";
 
         if (current == "light") { $("#theme_dark").remove(); } 
         if (current == "dark") { $("#theme_light").remove(); }  

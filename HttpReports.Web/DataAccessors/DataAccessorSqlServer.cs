@@ -59,13 +59,25 @@ namespace HttpReports.Web.DataAccessors
 
                     Select '200' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 200
                     Union
+                    Select '301' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 301
+                    Union
+                    Select '302' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 302
+                    Union
+                    Select '303' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 303
+                    Union
                     Select '400' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 400
                     Union
                     Select '401' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 401
                     Union
+                    Select '403' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 403
+                    Union
                     Select '404' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 404
                     Union
                     Select '500' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 500
+                    Union
+                    Select '502' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 502
+                    Union
+                    Select '503' Name,COUNT(1) Value From  RequestInfo {where} AND StatusCode = 503
 
                "; 
 
@@ -354,7 +366,7 @@ namespace HttpReports.Web.DataAccessors
                     return new CheckModel()
                     {
                         Ok = false,
-                        Value = percent.ToString(),
+                        Value = Math.Round(percent, 4).ToString(),
                         Time = Time
                     };
                 } 
@@ -392,7 +404,7 @@ namespace HttpReports.Web.DataAccessors
                     return new CheckModel()
                     {
                         Ok = false,
-                        Value = percent.ToString(),
+                        Value = Math.Round(percent, 4).ToString(),
                         Time = Time
                     };
                 }
@@ -431,7 +443,7 @@ namespace HttpReports.Web.DataAccessors
                     return new CheckModel()
                     {
                         Ok = false,
-                        Value = percent.ToString(),
+                        Value = Math.Round(percent,4).ToString(),
                         Time = Time
                     };
                 }  

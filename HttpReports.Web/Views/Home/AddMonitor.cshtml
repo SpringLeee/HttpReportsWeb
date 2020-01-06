@@ -1,7 +1,7 @@
 ﻿
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml"; 
- 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
     List<string> nodes = ViewBag.nodes;
 }
 
@@ -10,19 +10,17 @@
 
     @@media screen and (min-width:1170px) {
 
-        .title, .desc, .rate,.email,.mobiles {
+        .title, .desc, .email, .mobiles {
             width: 75% !important;
         }
     }
 
     .tab-pane {
-        
-        margin-top:12px; 
-        padding:20px 15px;
-        border-radius:6px; 
-        border:1px solid #ccc;
-    }  
-
+        margin-top: 12px;
+        padding: 20px 15px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
 </style>
 
 
@@ -32,7 +30,7 @@
 
         <ol class="breadcrumb">
             <li><a href="/Home/Monitor">预警监控</a></li>
-            <li><span href="#">任务编辑</span></li> 
+            <li><span href="#">任务编辑</span></li>
         </ol>
 
         <h3 style="margin-bottom:20px;">编辑任务</h3>
@@ -138,17 +136,17 @@
                             </ul>
 
 
-                        </div> 
+                        </div>
 
                         <div class="tab-content">
 
-                            <div id="tab11" class="tab-pane active"> 
+                            <div id="tab11" class="tab-pane active">
 
-                                <div class="row form-inline form"> 
+                                <div class="row form-inline form">
 
-                                    <div class="col-sm-12">  
+                                    <div class="col-sm-12">
 
-                                        <div class="col-lg-3"> 
+                                        <div class="col-lg-3">
 
                                             <label class="form-label">任务状态</label>
                                             <select class="form-control RtStatus">
@@ -168,9 +166,21 @@
 
                                         <div class="col-sm-3" style="padding:0">
                                             <label class="form-label">超时率</label>
-                                            <input type="text" class="form-control RtRate" placeholder="格式 0.01% 15% ... "> 
+                                            <input type="text" class="form-control RtRate" placeholder="格式 0.01% 15% ... ">
                                         </div>
 
+                                    </div>
+
+                                    <div class="col-sm-12" style="margin-top:20px;">
+
+                                        <div style="margin-left:12px;margin-right:12px;margin-bottom:0" class="alert alert-info" role="alert">
+
+                                            <p><b>响应超时监控</b>：主要针对一段时间内接口调用超时率过高；</p>
+
+                                            <p>1.设定接口超时时间(毫秒)；  2.设置接口超时百分比，支持 两位小数点，5%,0.03%,30%等,超时率达到或大于设定值时会触发预警；</p>
+
+                                        </div> 
+                                      
                                     </div>
 
                                 </div>
@@ -207,7 +217,19 @@
 
                                     </div>
 
-                                </div>
+                                    <div class="col-sm-12" style="margin-top:20px;">
+
+                                        <div style="margin-left:12px;margin-right:12px;margin-bottom:0" class="alert alert-info" role="alert">
+
+                                            <p><b>请求错误监控</b>：主要针对一段时间内接口调用错误率过高；</p>
+
+                                            <p>1.设定Http状态码,500,503,404,多个状态码用英文逗号隔开； 2.设置命中率,支持 两位小数点，5%,0.03%,30%等，命中率达到或大于设定值时会触发预警；</p>
+
+                                        </div>
+
+                                    </div>
+
+                                    </div>
 
                             </div>
 
@@ -241,6 +263,18 @@
 
                                     </div>
 
+                                    <div class="col-sm-12" style="margin-top:20px;">
+
+                                        <div style="margin-left:12px;margin-right:12px;margin-bottom:0" class="alert alert-info" role="alert">
+
+                                            <p><b>IP异常监控</b>：主要针对一段时间内大量固定IP请求，类似机器人请求;</p>
+
+                                            <p> 1.设置IP白名单(可不填),多个IP地址中间用英文逗号分开；  2.设置重复率，支持 两位小数点，5%,0.03%,30%等,当IP重复率达到或大于设定值时,触发预警； </p>
+
+                                        </div>
+
+                                    </div>
+
                                 </div>
 
 
@@ -269,9 +303,19 @@
                                             <input type="text" class="form-control RequestCount">
                                         </div>
 
-
                                     </div>
 
+                                    <div class="col-sm-12" style="margin-top:20px;">
+
+                                        <div style="margin-left:12px;margin-right:12px;margin-bottom:0" class="alert alert-info" role="alert">
+
+                                            <p><b>请求量监控</b>：主要针对一段时间内接口大量请求；</p>
+
+                                            <p> 1.设置单位时间内接口最大请求量,当请求量达到或者大于设定时触发预警 </p>
+
+                                        </div>
+
+                                    </div>
                                 </div>
 
 
@@ -300,5 +344,5 @@
 
 </div>
 
- 
-<script src="~/Content/page/addmonitor.js?ver=1.1"></script>
+
+<script src="~/Content/page/addmonitor.js?ver=1.0.1"></script>

@@ -44,10 +44,10 @@ function changeTopCount(item) {
 }
 
 //初始化百度Echart
-function InitChart() {
+function InitChart() { 
 
     // 状态码
-    global.StatusCodePie = echarts.init(document.getElementById('StatusCodePie'), 'macarons');
+    global.StatusCodePie = echarts.init(document.getElementById('StatusCodePie'),httpreports.chart_theme);
 
     global.StatusCodePieOption = {
         title: {

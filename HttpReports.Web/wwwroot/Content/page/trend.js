@@ -1,7 +1,17 @@
 ﻿
 laydate.render({ elem: '.month', type: 'month' });
 laydate.render({ elem: '.year', type: 'year' });
-laydate.render({ elem: '.day'  });
+laydate.render({ elem: '.day' });
+
+function QueryClick(item) {
+
+    GetDayChart();
+
+    GetLatelyChart();
+
+    GetLatelyMonthChart();
+
+}
 
 
 var global = {};
