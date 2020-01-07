@@ -7,3 +7,6 @@
 /HttpReports.Web/obj
 *.user
 /HttpReports.Web/bin/Release/netcoreapp2.2
+/HttpReportsWeb/bin
+/HttpReportsWeb/obj
+/HttpReportsWeb/Properties
