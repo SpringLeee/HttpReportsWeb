@@ -92,7 +92,7 @@ namespace HttpReports.Web.DataContext
 
                     ");
 
-                    //new MockData().MockSqlServer(Constr); 
+                    new MockData().MockSqlServer(Constr); 
                 } 
 
                 // 检查Job表
@@ -170,7 +170,7 @@ namespace HttpReports.Web.DataContext
                           PRIMARY KEY  (`Id`)
                         ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;  ");
 
-                   //new MockData().MockMySql(Constr);
+                   new MockData().MockMySql(Constr);
 
                 }
 

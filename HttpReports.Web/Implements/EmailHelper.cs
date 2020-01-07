@@ -15,7 +15,7 @@ namespace HttpReports.Web.Implements
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var url = "http://email.soboob.com/api/email/send";
+                var url = "http://175.102.11.117:8802/api/email/send";
 
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
