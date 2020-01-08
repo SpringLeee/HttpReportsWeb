@@ -154,7 +154,7 @@ namespace HttpReports.Web.DataContext
                 TempConn.Close();
                 TempConn.Dispose(); 
 
-                if (con.QueryFirstOrDefault<int>("  Select count(1) from information_schema.tables where table_name ='requestinfo'; ") == 0)
+                if (con.QueryFirstOrDefault<int>("  Select count(1) from information_schema.tables where table_name ='httpreports.requestinfo'; ") == 0)
                 {
                     con.Execute(@"
                         CREATE TABLE `Requestinfo` (
@@ -174,7 +174,7 @@ namespace HttpReports.Web.DataContext
 
                 }
 
-                if (con.QueryFirstOrDefault<int>("Select count(1) from information_schema.tables where table_name ='job';") == 0)
+                if (con.QueryFirstOrDefault<int>("Select count(1) from information_schema.tables where table_name ='httpreports.job';") == 0)
                 {
                     con.Execute(@"
 
