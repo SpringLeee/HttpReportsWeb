@@ -92,7 +92,7 @@ namespace HttpReports.Web.DataContext
 
                     ");
 
-                    new MockData().MockSqlServer(Constr); 
+                    //new MockData().MockSqlServer(Constr); 
                 } 
 
                 // 检查Job表
@@ -140,24 +140,24 @@ namespace HttpReports.Web.DataContext
         {  
             using (MySqlConnection con = new MySqlConnection(Constr))
             {
-                string TempConstr = Constr.ToLower().Replace("httpreports", "sys");
+                //string TempConstr = Constr.ToLower().Replace("httpreports", "sys");
 
-                MySqlConnection TempConn = new MySqlConnection(TempConstr);
+                //MySqlConnection TempConn = new MySqlConnection(TempConstr);
 
-                var DbInfo = TempConn.QueryFirstOrDefault<string>("  show databases like 'httpreports'; ");
+                //var DbInfo = TempConn.QueryFirstOrDefault<string>("  show databases like 'httpreports'; ");
 
-                if (string.IsNullOrEmpty(DbInfo))
-                {
-                    TempConn.Execute(" create database HttpReports; ");
-                }
+                //if (string.IsNullOrEmpty(DbInfo))
+                //{
+                //    TempConn.Execute(" create database HttpReports; ");
+                //}
 
-                TempConn.Close();
-                TempConn.Dispose(); 
+                //TempConn.Close();
+                //TempConn.Dispose(); 
 
-                if (con.QueryFirstOrDefault<int>("  Select count(1) from information_schema.tables where table_name ='requestinfo'; ") == 0)
+                if (con.QueryFirstOrDefault<int>(" Select count(1) from information_schema.tables where table_name ='RequestInfo' and table_schema = 'HttpReports'; ") == 0)
                 {
                     con.Execute(@"
-                        CREATE TABLE `Requestinfo` (
+                        CREATE TABLE `RequestInfo` (
                           `Id` int(11) NOT NULL auto_increment,
                           `Node` varchar(50) default NULL,
                           `Route` varchar(50) default NULL,
@@ -170,11 +170,11 @@ namespace HttpReports.Web.DataContext
                           PRIMARY KEY  (`Id`)
                         ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;  ");
 
-                   new MockData().MockMySql(Constr);
+                   //new MockData().MockMySql(Constr);
 
                 }
 
-                if (con.QueryFirstOrDefault<int>("Select count(1) from information_schema.tables where table_name ='job';") == 0)
+                if (con.QueryFirstOrDefault<int>("Select count(1) from information_schema.tables where table_name ='Job' and table_schema = 'HttpReports'; ") == 0)
                 {
                     con.Execute(@"
 
